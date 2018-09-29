@@ -1,0 +1,29 @@
+.messages-list {
+    background-color: white;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.not-selected-conversation {
+    background-color: #eef0ee;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inform-message {
+    background-color: #c9cdcb;
+    padding: 10px;
+    color: white;
+    border-radius: 20px;
+}

@@ -7,8 +7,8 @@ import MessageSendBox from "../../components/MessageSendBox/MessageSendBox";
 class MessageSendBoxContainer extends PureComponent {
 
     addNewMessage = (message) => {
-        const { addMessage, conversationId,  userId} = this.props;
-        addMessage(message, conversationId, userId)
+        const { addMessage, conversationId,  userId, companionId } = this.props;
+        addMessage(message, conversationId, userId, companionId)
     };
 
     render() {
@@ -20,10 +20,10 @@ class MessageSendBoxContainer extends PureComponent {
 }
 
 function mapStateToProps(state, props) {
-    console.log(state.conversations.activeConversation)
     return {
         ...props,
         userId: state.user.user._id,
+        companionId: state.users.chooseUser,
         conversationId: state.conversations.activeConversation,
     }
 }
@@ -31,7 +31,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
-        addMessage: (message, conversationId, author) => dispatch(addMessage(message, conversationId, author)),
+        addMessage: (message, conversationId, authorId) => dispatch(addMessage(message, conversationId, authorId, companionId)),
     }
 }
 

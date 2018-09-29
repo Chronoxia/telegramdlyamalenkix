@@ -8,6 +8,7 @@ import "./ChatPage.css"
 
 import ConversationsListContainer from "containers/ConversationsListContainer";
 import MessagesListContainer from "containers/MessagesListContainer";
+import UsersListContainer from "containers/UsersListContainer/UsersListContainer";
 
 export default class ChatPage extends PureComponent {
     render() {
@@ -24,6 +25,7 @@ export default class ChatPage extends PureComponent {
                 <Row className="chat-page">
                     <Col xs={3}>
                         <ConversationsListContainer/>
+                        <UsersListContainer/>
                     </Col>
                     <Col xs={9}>
                         <MessagesListContainer/>

@@ -1,45 +1,28 @@
 import  { createAction } from 'redux-actions';
 import socket from '../socket';
 
-export const openConversation = (myId, userId) => (dispatch) => {
-    const token = localStorage.getItem('token');
-    dispatch(openStarted());
-    fetch(`http://localhost:5000/chat/conversation?myId=${myId}&userId=${userId}`, {
-        method: "get",
-        headers: {
-            'access-token': token,
-        }})
-        .then(res => res.json())
-        .then(data => {
-            console.log(99999999999, data)
-            return data;
-        })
-        .then(conversationData => dispatch(openComplete(conversationData)))
-        .catch(err => dispatch(openFailed(err)))
-};
-
 const requestConversations = () => ({
     type: 'REQUEST_CONVERSATIONS',
-})
+});
 
 const getConversationsSuccess = (data) => ({
 	type: 'GET_CONVERSATIONS_SUCCESS',
 	payload: data
-})
+});
 
 const getConversationsFailure = (err) => ({
 	type: 'GET_CONVERSATIONS_ERROR',
 	payload: {
 		err: err || 'Something went wrong',
 	}
-})
+});
 
 export const changeConversation = (id) => ({
 	type: 'CHANGE_CONVERSATION',
 	payload: {
 		id,
 	}
-})
+});
 
 export const getConversations = () => (dispatch) => {
 	const token = localStorage.getItem('token');
@@ -53,7 +36,7 @@ export const getConversations = () => (dispatch) => {
 		.then(res => res.json())
 		.then(data => dispatch(getConversationsSuccess(data)))
 		.catch(err => dispatch(getConversationsFailure(err)))
-}
+};
 
 export const addMessage  = (text, conversationId, authorId) => (dispatch) => {
     console.log(666, text, conversationId, authorId);

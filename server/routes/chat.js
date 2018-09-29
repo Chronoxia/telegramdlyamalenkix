@@ -64,10 +64,11 @@ router.post('/conversation', checkAuth, (req, res) => {
 
 
 router.post('/message', checkAuth, (req, res) => {
-    const { text, conversationId, authorId, companionId } = req.body;
+    const { text, conversationId, authorId } = req.body;
     Conversation.findById(conversationId)
         .then((conversation) => {
             if(!conversation) {
+                const { companionId } = req.body;
                 return Conversation.create({
                     participants: [authorId, companionId]
                 })

@@ -20,10 +20,11 @@ class MessageSendBoxContainer extends PureComponent {
 }
 
 function mapStateToProps(state, props) {
+    console.log(state.conversations.activeConversation)
     return {
         ...props,
         userId: state.user.user._id,
-        conversationId: state.conversation._id,
+        conversationId: state.conversations.activeConversation,
     }
 }
 

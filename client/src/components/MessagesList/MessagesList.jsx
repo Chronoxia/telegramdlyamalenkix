@@ -6,25 +6,38 @@ import {
 import "./MessagesList.css"
 import Message from '../Message';
 import MessageSendBoxContainer from "containers/MessageSendBoxContainer";
+import { connect } from 'react-redux';
 
-export default class MessagesList extends PureComponent {
-
+class MessagesList extends PureComponent {
     //todo refactor this please
     render() {
-        const { conversation, userId } = this.props;
-        console.log(conversation);
+        const { id, lastMessages } = this.props.conversation;
+        const { userId } = this.props;
         return (
-            <Col xs={12} className={conversation._id ? "messages-list" : "not-selected-conversation"}>
+            <Col xs={12} className={id ? "messages-list" : "not-selected-conversation"}>
                 <div className="messages">
-                    { conversation._id
-                        ? (conversation.messages && conversation.messages.length
-                        ? conversation.messages.map((message) =>  {console.log(message); return <Message key={message._id} text={message.text} author={message.author} userId={userId}/>})
+                    { id
+                        ? (lastMessages && lastMessages.length
+                        ? lastMessages.map((message) =>  {console.log(message); return <Message key={message._id} text={message.text} author={message.author} userId={userId}/>})
                             : null)
                         : <span className="inform-message">Please select any chat to start messaging</span>
                     }
                 </div>
-                    { conversation._id ? <MessageSendBoxContainer/> : null }
+                    { this.props.conversation ? <MessageSendBoxContainer/> : null }
             </Col>
         );
     }
 }
+
+export default connect(
+    (state, ownProps) => {
+        console.log(333, state);
+        return {
+            conversation: state.conversations.conversations[ownProps.conversation],
+            userId: state.user.user._id
+        }
+    },
+    (dispatch) => ({
+
+    })
+)(MessagesList)

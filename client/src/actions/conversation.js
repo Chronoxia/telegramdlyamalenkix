@@ -7,7 +7,7 @@ export const openConversation = (myId, userId) => (dispatch) => {
     fetch(`http://localhost:5000/chat/conversation?myId=${myId}&userId=${userId}`, {
         method: "get",
         headers: {
-            'access-token': token || '',
+            'access-token': token,
         }})
         .then(res => res.json())
         .then(data => {
@@ -17,6 +17,43 @@ export const openConversation = (myId, userId) => (dispatch) => {
         .then(conversationData => dispatch(openComplete(conversationData)))
         .catch(err => dispatch(openFailed(err)))
 };
+
+const requestConversations = () => ({
+    type: 'REQUEST_CONVERSATIONS',
+})
+
+const getConversationsSuccess = (data) => ({
+	type: 'GET_CONVERSATIONS_SUCCESS',
+	payload: data
+})
+
+const getConversationsFailure = (err) => ({
+	type: 'GET_CONVERSATIONS_ERROR',
+	payload: {
+		err: err || 'Something went wrong',
+	}
+})
+
+export const changeConversation = (id) => ({
+	type: 'CHANGE_CONVERSATION',
+	payload: {
+		id,
+	}
+})
+
+export const getConversations = () => (dispatch) => {
+	const token = localStorage.getItem('token');
+	dispatch(requestConversations());
+
+	return fetch(`http://localhost:5000/chat/conversations`, {
+		method: 'get',
+		headers: {
+			'access-token': token,
+		}})
+		.then(res => res.json())
+		.then(data => dispatch(getConversationsSuccess(data)))
+		.catch(err => dispatch(getConversationsFailure(err)))
+}
 
 export const addMessage  = (message, conversationId, author) => (dispatch) => {
     console.log(message, conversationId, author);

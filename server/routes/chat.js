@@ -55,8 +55,8 @@ router.get('/conversations',checkAuth, (req, res) => {
 router.post('/conversation', checkAuth, (req, res) => {
     const { participants, title } = req.body;
     User.find({_id: {$in: participants}})
-        .then((users) => Conversation.create({
-            participants: users,
+        .then(() => Conversation.create({
+            participants: participants,
             title
         }))
         .then((conversation) => res.status(200).send({conversation}))
@@ -65,13 +65,23 @@ router.post('/conversation', checkAuth, (req, res) => {
 
 
 router.post('/message', checkAuth, (req, res) => {
-    const { message, conversationId, author } = req.body;
-    console.log(message, conversationId, author);
-    Message.create({
-        conversationId,
-        author,
-        text: message.text
-    })
+    const { text, conversationId, authorId, companionId } = req.body;
+    Conversation.findById(conversationId)
+        .then((conversation) => {
+            if(!conversation) {
+                return Conversation.create({
+                    participants: [authorId, companionId]
+                })
+            }
+            return conversation;
+        })
+        .then((conversation) => {
+            Message.create({
+                conversationId: conversation._id,
+                authorId,
+                text,
+            })
+        })
         .then((message) => res.status(200).send({message}))
 
 });

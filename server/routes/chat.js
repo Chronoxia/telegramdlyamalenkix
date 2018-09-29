@@ -41,7 +41,7 @@ router.get('/conversations',checkAuth, (req, res) => {
                         select: 'nickname'
                     })
                     .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title};
+                        fullConversations[_id] = {lastMessages: messages, title, id: _id};
                         if (Object.keys(fullConversations).length === conversations.length) {
                             console.log(fullConversations);
                             return res.status(200).json({ conversations: fullConversations });
@@ -52,27 +52,15 @@ router.get('/conversations',checkAuth, (req, res) => {
         .catch((err) => console.log(err))
 });
 
-router.get('/conversation', checkAuth, (req, res) => {
-    console.log(req.query.myId, req.query.userId);
-    const { myId, userId } = req.query;
-    User.findOne({_id: myId})
-        .then(() => User.findOne({_id: userId}), (err) => console.log(err))
-        .then(() => Conversation.findOne({participants: { $all :[myId, userId]}}))
-        .then((conversation) => {
-            if(!conversation) {
-                return Conversation.create({
-                    participants: [myId, userId]
-                })
-            }
-            return Message.find({conversationId: conversation._id})
-                .then((messages) => { 
-                    console.log(2);
-                    return {conversation, messages} 
-                })
-        })
-        .then((conversationData) => res.status(200).send({conversationData}))
-        .catch(err => console.log(err))
-
+router.post('/conversation', checkAuth, (req, res) => {
+    const { participants, title } = req.body;
+    User.find({_id: {$in: participants}})
+        .then((users) => Conversation.create({
+            participants: users,
+            title
+        }))
+        .then((conversation) => res.status(200).send({conversation}))
+        .catch(err => console.log(err));
 });
 
 

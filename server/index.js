@@ -44,11 +44,9 @@ io.on('connection', socket => {
         console.log('user disconnected');
     });
     socket.on('MESSAGE_ADD', (message) => {
-        console.log(message);
         io.to(message.conversationId).emit(`MESSAGE_RECEIVED`, message)
     });
     socket.on('USER_JOIN', (room) => {
-        console.log(1);
         console.log(`joined ${room}`);
         socket.join(room);
     });

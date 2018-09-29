@@ -7,10 +7,16 @@ import MessagesList from "components/MessagesList";
 import { addMessageSuccess } from "actions/conversation";
 
 class MessagesListContainer extends PureComponent {
-    componentDidMount() {
-        console.log(11111, this.props.conversation)
-        this.initSocket();
-    }
+    // constructor(props) {
+    //     super(props)
+
+    //     this.initSocket();
+    // }
+
+    // componentDidMount() {
+    //     console.log(11111, this.props.conversation)
+    //     this.initSocket();
+    // }
 
     componentDidUpdate(prevProps) {
         console.log(this.props.conversation);  
@@ -21,11 +27,12 @@ class MessagesListContainer extends PureComponent {
     }
 
     initSocket() {  
-        const { addMessageSuccess } = this.props;
-        socket.on('MESSAGE_RECEIVED', (message) => {
-            console.log(1)
-            addMessageSuccess(message); //t
-        })
+        // console.log(1);
+        // const { addMessageSuccess } = this.props;
+        // socket.on('MESSAGE_RECEIVED', (message) => {
+        //     console.log(1)
+        //     addMessageSuccess(message); //t
+        // })
     }
 
     render() {

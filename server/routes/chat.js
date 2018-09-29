@@ -18,6 +18,40 @@ router.get('/users', checkAuth, (req, res) => {
         })
 });
 
+router.get('/conversations',checkAuth, (req, res) => {
+    const { userId } = req;
+    Conversation.find({participants: { $all :[userId]}})
+        .populate({
+            path: 'participants',
+        })
+        .then((conversations) => {
+            const fullConversations = {};
+            conversations.forEach((conversation) => {
+                let { title, _id } = conversation;
+                if(!title) {
+                    const indexOfUser = conversation.participants.indexOf(userId);
+                    const companion = conversation.participants.splice(indexOfUser, 1)[0];
+                    title = companion.nickname
+                }
+                Message.find({ conversationId: _id })
+                    .sort('-createdAt')
+                    .limit(20)
+                    .populate({
+                        path: 'user',
+                        select: 'nickname'
+                    })
+                    .then((messages) => {
+                        fullConversations[_id] = {lastMessages: messages, title};
+                        if (Object.keys(fullConversations).length === conversations.length) {
+                            console.log(fullConversations);
+                            return res.status(200).json({ conversations: fullConversations });
+                        }
+                    })
+            });
+        })
+        .catch((err) => console.log(err))
+});
+
 router.get('/conversation', checkAuth, (req, res) => {
     console.log(req.query.myId, req.query.userId);
     const { myId, userId } = req.query;
@@ -41,30 +75,7 @@ router.get('/conversation', checkAuth, (req, res) => {
 
 });
 
-router.get('/conversations', (req, res) => {
-    Conversation.find()
-        .select('_id')
-        .then((conversations) => {
-            const fullConversations = [];
-            conversations.forEach((conversation) => {
-                Message.find({ conversationId: conversation._id })
-                    .sort('-createdAt')
-                    .limit(1)
-                    .populate({
-                        path: 'author',
-                        select: 'nickname'
-                    })
-                    .then((message) => {
-                        console.log(message[0]);
-                        fullConversations.push(message[0]);
-                        if (fullConversations.length === conversations.length) {
-                            return res.status(200).json({ conversations: fullConversations });
-                        }
-                    })
-            });
-        })
-        .catch((err) => console.log(err))
-});
+
 router.post('/message', checkAuth, (req, res) => {
     const { message, conversationId, author } = req.body;
     console.log(message, conversationId, author);

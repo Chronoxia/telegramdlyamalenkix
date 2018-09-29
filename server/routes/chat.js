@@ -34,7 +34,6 @@ router.get('/conversations',checkAuth, (req, res) => {
                     title = companion.nickname
                 }
                 Message.find({ conversationId: _id })
-                    .sort('-createdAt')
                     .limit(20)
                     .populate({
                         path: 'user',
@@ -75,14 +74,16 @@ router.post('/message', checkAuth, (req, res) => {
             }
             return conversation;
         })
-        .then((conversation) => {
+        .then((conversation) => (
             Message.create({
                 conversationId: conversation._id,
-                authorId,
+                author: authorId,
                 text,
             })
+        ))
+        .then((message) => {
+            return res.status(200).json(message)
         })
-        .then((message) => res.status(200).send({message}))
 
 });
 

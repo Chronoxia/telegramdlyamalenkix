@@ -23,8 +23,8 @@ class MessagesListContainer extends PureComponent {
     initSocket() {  
         const { addMessageSuccess } = this.props;
         socket.on('MESSAGE_RECEIVED', (message) => {
-            console.log(message)
-            addMessageSuccess(message);
+            console.log(1)
+            addMessageSuccess(message); //t
         })
     }
 

@@ -36,7 +36,7 @@ export default class MessageSendBox extends PureComponent {
         const { message } = this.state;
         const  { addNewMessage } = this.props;
         // socket.emit("MESSAGE_ADD", {...message, time: Date.now()});
-        addNewMessage(message);
+        addNewMessage(message.text);
         this.setState({
             message: {
                 text: ''

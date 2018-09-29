@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import { addMessage } from "actions/conversation";
 import MessageSendBox from "../../components/MessageSendBox/MessageSendBox";

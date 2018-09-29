@@ -49,14 +49,14 @@ export default handleActions({
             fetchingMessage: true,
         }
     },
-    [addMessageSuccess]: (state, action) => {
-        console.log("act", action);
-        console.log(777, state.messages);
-        return {
-            ...state,
-            messages: state.messages.concat(action.payload)
-        }
-    },
+    // [addMessageSuccess]: (state, action) => {
+    //     console.log("act", action);
+    //     console.log(777, state.messages);
+    //     return {
+    //         ...state,
+    //         messages: state.messages.concat(action.payload)
+    //     }
+    // },
     [addMessageFailed]: (state, action) => {
         console.log(state);
         return {

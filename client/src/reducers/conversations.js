@@ -6,6 +6,7 @@ const initialState = {
 }
 
 const conversations = (state = initialState, action) => {
+  const copy = JSON.parse(JSON.stringify(state));
   switch (action.type) {
     case 'REQUEST_CONVERSATIONS': 
       return {
@@ -31,6 +32,17 @@ const conversations = (state = initialState, action) => {
       return {
         ...state,
         activeConversation: action.payload.id
+      }
+    case 'ADD_MESSAGE_SUCCESS': 
+      return {
+        ...state,
+        conversations: {
+          ...state.conversations,
+          [action.payload.message.conversationId]: {
+            ...state.conversations[action.payload.message.conversationId],
+            lastMessages: state.conversations[action.payload.message.conversationId].lastMessages.concat(action.payload.message)
+          }
+        }
       }
     default:
       return state;

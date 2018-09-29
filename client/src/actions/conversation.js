@@ -55,16 +55,16 @@ export const getConversations = () => (dispatch) => {
 		.catch(err => dispatch(getConversationsFailure(err)))
 }
 
-export const addMessage  = (message, conversationId, author) => (dispatch) => {
-    console.log(message, conversationId, author);
+export const addMessage  = (text, conversationId, authorId) => (dispatch) => {
+    console.log(666, text, conversationId, authorId);
     const token = localStorage.getItem('token');
     dispatch(addMessageStarted());
     fetch(`http://localhost:5000/chat/message`, {
         method: "post",
         body: JSON.stringify({
-            message,
+            text,
             conversationId,
-            author
+            authorId
         }),
         headers: {
             'access-token': token,
@@ -72,14 +72,21 @@ export const addMessage  = (message, conversationId, author) => (dispatch) => {
         }})
         .then(res => res.json())
         .then(message => {
-            socket.emit('MESSAGE_ADD', message.message)
+            socket.emit('MESSAGE_ADD', message)
         })
         .catch(err => dispatch(addMessageFailed(err)))
 };
+
+export const addMessageSuccess = (message) => ({
+    type: 'ADD_MESSAGE_SUCCESS',
+    payload: {
+        message
+    }
+})
 
 export const openStarted = createAction('[Conversation] Open started');
 export const openComplete = createAction('[Conversation] Open complete');
 export const openFailed = createAction('[Conversation] Open failed');
 export const addMessageStarted = createAction('[Conversation] Add message started');
-export const addMessageSuccess = createAction('[Conversation] Add message success');
+// export const addMessageSuccess = createAction('[Conversation] Add message success');
 export const addMessageFailed = createAction('[Conversation] Add message failed');

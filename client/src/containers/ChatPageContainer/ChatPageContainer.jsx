@@ -9,7 +9,7 @@ class ChatPageContainer extends PureComponent {
         this.props.getConversations();
         this.initSocket();
     }
-
+    
     initSocket() {
         const { user } = this.props;
         console.log(123123123123, user)
@@ -17,7 +17,13 @@ class ChatPageContainer extends PureComponent {
     }
 
     render() {
-        const { user } = this.props;
+        const { user, isFetching } = this.props;
+        if (isFetching) {
+            return (
+                <p>Fetching...</p>
+            )
+        }
+
         return (
             <ChatPage user={user}/>
         );
@@ -28,6 +34,7 @@ function mapStateToProps(state, props) {
     return {
         ...props,
         user: state.user.user,
+        isFetching: state.conversations.isFetching,
     }
 }
 

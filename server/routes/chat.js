@@ -27,7 +27,7 @@ router.get('/conversations',checkAuth, (req, res) => {
         .then((conversations) => {
             const fullConversations = {};
             conversations.forEach((conversation) => {
-                let { title, _id } = conversation;
+                let { title, _id, participants } = conversation;
                 if(!title) {
                     const indexOfUser = conversation.participants.indexOf(userId);
                     const companion = conversation.participants.splice(indexOfUser, 1)[0];
@@ -41,9 +41,8 @@ router.get('/conversations',checkAuth, (req, res) => {
                         select: 'nickname'
                     })
                     .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title, id: _id};
+                        fullConversations[_id] = {lastMessages: messages, title, id: _id, participants };
                         if (Object.keys(fullConversations).length === conversations.length) {
-                            console.log(fullConversations);
                             return res.status(200).json({ conversations: fullConversations });
                         }
                     })
@@ -84,6 +83,14 @@ router.post('/message', checkAuth, (req, res) => {
         })
         .then((message) => res.status(200).send({message}))
 
+});
+
+router.get('/searchUsers/:input',  checkAuth, (req, res) => {
+    const { input } = req.params;
+    const pattern = /^${input}/;
+    User.find({email:{$regex: pattern}})
+        .then((users) => res.status(200).json(users))
+        .catch((err) => console.log(err))
 });
 
 module.exports = router;

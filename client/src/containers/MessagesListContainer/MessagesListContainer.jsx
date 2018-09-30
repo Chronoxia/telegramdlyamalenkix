@@ -17,8 +17,8 @@ class MessagesListContainer extends PureComponent {
     }
 
     render() {
-        const { conversation, userId } = this.props;
-        if (!conversation) {
+        const { conversation, userId, chosenUser } = this.props;
+        if (!(conversation || chosenUser)) {
             return (
                 <p>lalala</p>
             )
@@ -33,7 +33,8 @@ function mapStateToProps(state, props) {
     return {
         ...props,
         conversation: state.conversations.activeConversation,
-        userId: state.user.user._id
+        userId: state.user.user._id,
+        chosenUser: state.users.chosenUser
     }
 }
 

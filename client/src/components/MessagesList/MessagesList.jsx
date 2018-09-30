@@ -9,35 +9,33 @@ import MessageSendBoxContainer from "containers/MessageSendBoxContainer";
 import { connect } from 'react-redux';
 
 class MessagesList extends PureComponent {
-    //todo refactor this please
     render() {
         const { id, lastMessages } = this.props.conversation;
-        const { userId } = this.props;
+        const { userId, chosenUser } = this.props;
         return (
-            <Col xs={12} className={id ? "messages-list" : "not-selected-conversation"}>
+            <Col xs={12} className={id || chosenUser ? "messages-list" : "not-selected-conversation"}>
                 <div className="messages">
-                    { id
-                        ? (lastMessages && lastMessages.length
-                        ? lastMessages.map((message) =>  { return <Message key={message._id} text={message.text} author={message.author} userId={userId}/>})
-                            : null)
-                        : <span className="inform-message">Please select any chat to start messaging</span>
+                    {
+                        lastMessages.map((message) =>  (
+                            <Message key={message._id}
+                                     text={message.text}
+                                     author={message.author}
+                                     userId={userId}/>
+                        ))
                     }
                 </div>
-                    { this.props.conversation ? <MessageSendBoxContainer/> : null }
+                    { (id || chosenUser) && <MessageSendBoxContainer/> }
             </Col>
         );
     }
 }
 
-export default connect(
-    (state, ownProps) => {
-        console.log(333, state);
-        return {
-            conversation: state.conversations.conversations[ownProps.conversation],
-            userId: state.user.user._id
-        }
-    },
-    (dispatch) => ({
+const mapStateToProps = (state, ownProps) => ({
+        conversation: state.conversations.conversations[ownProps.conversation] || {id: null, lastMessages: []},
+        userId: state.user.user._id,
+        chosenUser: state.users.chosenUser
+    });
 
-    })
+export default connect(
+    mapStateToProps
 )(MessagesList)

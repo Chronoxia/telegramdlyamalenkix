@@ -34,7 +34,6 @@ router.get('/conversations',checkAuth, (req, res) => {
                     title = companion.nickname
                 }
                 Message.find({ conversationId: _id })
-                    .limit(20)
                     .populate({
                         path: 'user',
                         select: 'nickname'
@@ -62,6 +61,14 @@ router.post('/conversation', checkAuth, (req, res) => {
         .catch(err => console.log(err));
 });
 
+router.get('/conversation/:companionId', checkAuth, (req, res) => {
+    const { userId } = req;
+    const { companionId } = req.params;
+    Conversation.findOne({ participants: {$in: [ [userId, companionId], [companionId, userId] ]} })
+        .then((conversation) =>{console.log(conversation); return res.status(200).json(conversation)})
+        .catch((err) => console.log(err));
+
+});
 
 router.post('/message', checkAuth, (req, res) => {
     const { text, conversationId, authorId } = req.body;

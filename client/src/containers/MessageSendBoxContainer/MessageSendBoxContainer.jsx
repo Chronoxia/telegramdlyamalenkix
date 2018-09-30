@@ -23,7 +23,7 @@ function mapStateToProps(state, props) {
     return {
         ...props,
         userId: state.user.user._id,
-        companionId: state.users.chooseUser,
+        companionId: state.users.chosenUser,
         conversationId: state.conversations.activeConversation,
     }
 }
@@ -31,7 +31,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
-        addMessage: (message, conversationId, authorId) => dispatch(addMessage(message, conversationId, authorId)),
+        addMessage: (message, conversationId, authorId, companionId) => dispatch(addMessage(message, conversationId, authorId, companionId)),
     }
 }
 

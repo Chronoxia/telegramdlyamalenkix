@@ -33,7 +33,6 @@ export default handleActions({
         }
     },
     [addUser]: (state, action) => {
-        console.log(5555555555, state, action);
         return {
             ...state,
             entities: state.entities.concat(action.payload)
@@ -42,7 +41,11 @@ export default handleActions({
     [chooseUser]: (state, action) => {
         return {
             ...state,
-            chosenUser: action.payload
+            chosenUser: action.payload,
+            conversations: {
+                ...state.conversations,
+                activeConversation: null,
+            }
         }
     },
 

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import {connect} from "react-redux";
 
-import { loadUsers, chooseUser } from 'actions/users'
+import { loadUsers } from 'actions/users'
+import { checkConversation } from 'actions/conversation'
 import UsersList from "components/UsersList";
 
 
@@ -13,8 +14,8 @@ class UsersListContainer extends PureComponent {
     }
 
     chooseUser = (selectedUserId) => {
-        const { chooseUser } = this.props;
-        chooseUser(selectedUserId);
+        const { checkConversation } = this.props;
+        checkConversation(selectedUserId);
     };
 
     render() {
@@ -37,7 +38,7 @@ function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
         loadUsers: (userId) => dispatch(loadUsers(userId)),
-        chooseUser: (userId) => dispatch(chooseUser(userId)),
+        checkConversation: (companionId) => dispatch(checkConversation(companionId))
     }
 }
 

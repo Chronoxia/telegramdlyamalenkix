@@ -1,4 +1,5 @@
 import  { createAction } from 'redux-actions';
+import { chooseUser } from 'actions/users';
 import socket from '../socket';
 
 const requestConversations = () => ({
@@ -38,7 +39,7 @@ export const getConversations = () => (dispatch) => {
 		.catch(err => dispatch(getConversationsFailure(err)))
 };
 
-export const addMessage  = (text, conversationId, authorId) => (dispatch) => {
+export const addMessage  = (text, conversationId, authorId, companionId) => (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(addMessageStarted());
     fetch(`http://localhost:5000/chat/message`, {
@@ -46,7 +47,8 @@ export const addMessage  = (text, conversationId, authorId) => (dispatch) => {
         body: JSON.stringify({
             text,
             conversationId,
-            authorId
+            authorId,
+            companionId
         }),
         headers: {
             'access-token': token,
@@ -64,11 +66,30 @@ export const addMessageSuccess = (message) => ({
     payload: {
         message
     }
-})
+});
 
-export const openStarted = createAction('[Conversation] Open started');
-export const openComplete = createAction('[Conversation] Open complete');
-export const openFailed = createAction('[Conversation] Open failed');
+export const checkConversation = (companionId) => (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(checkConversationStarted());
+    fetch(`http://localhost:5000/chat/conversation/${companionId}`, {
+        method: "get",
+        headers: {
+            'access-token': token,
+            'Content-Type': 'application/json'
+        }})
+        .then(res => res.json())
+        .then(conversation => {
+            if (conversation) {
+                dispatch(changeConversation(conversation._id))
+            } else {
+                dispatch(chooseUser(companionId))
+            }
+        })
+        .catch(err => dispatch(checkConversationFailed(err)))
+};
+
 export const addMessageStarted = createAction('[Conversation] Add message started');
-// export const addMessageSuccess = createAction('[Conversation] Add message success');
 export const addMessageFailed = createAction('[Conversation] Add message failed');
+
+export const checkConversationStarted = createAction('[Conversation] Check started');
+export const checkConversationFailed = createAction('[Conversation] Check failed');

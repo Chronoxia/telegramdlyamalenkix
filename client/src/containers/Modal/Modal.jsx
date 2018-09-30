@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { createConversation } from '../../actions/conversation';
+
 class Modal extends Component {
   state = {
     title: 'Name',
     isEditing: false,
-    users: [],
+    participants: [],
   }
 
   renderTitle() {
@@ -63,7 +65,7 @@ class Modal extends Component {
 
   handleClick = (user) => {
     this.setState({
-      users: this.state.users.concat(user)
+      participants: this.state.participants.concat(user)
     })
   }
 
@@ -90,7 +92,7 @@ class Modal extends Component {
           ))}
         </ul>
         <ul>
-          {this.state.users.map(u => (
+          {this.state.participants.map(u => (
             <li
               key={u._id}
             >
@@ -99,7 +101,7 @@ class Modal extends Component {
           ))}
         </ul>
         <button
-          onClick={ () => createConversation() }
+          onClick={ () => createConversation(this.state.title, this.state.participants) }
         >
           Create
         </button>
@@ -119,7 +121,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getUsers: () => console.log('yay!'),
-  createConversation: () => console.log('such wow'),
+  createConversation: (title, participants) => dispatch(createConversation(title, participants)),
   cancel: () => console.log('yay!'),
 })
 

@@ -1,4 +1,5 @@
-import { chooseUser } from 'actions/users'
+import { chooseUser } from 'actions/users';
+
 const initialState = {
   conversations: {},
   activeConversation: null,
@@ -47,8 +48,18 @@ const conversations = (state = initialState, action) => {
       case '[Users] New user was chosen':
         return {
           ...state,
-            activeConversation: null,
+          activeConversation: null,
         };
+      case 'CREATE_CONVERSATION_SUCCESS':
+         return {
+           ...state,
+           conversations: {
+             ...state.conversations,
+             [action.payload.conversation.id]: {
+               ...action.payload.conversation,
+             }
+           }
+         }
     default:
       return state;
   }

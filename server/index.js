@@ -35,27 +35,45 @@ app.use('/chat', ChatController);
 
 
 const port = 5000;
+// socketId: userId
+const users = { };
 
 io.on('connection', socket => {
     console.log("User connected");
 
     socket.on('disconnect', () => {
-        socket.emit('USER_LEAVE');
-        console.log('user disconnected');
+        delete users[socket.id];
     });
     socket.on('MESSAGE_ADD', (message) => {
         io.to(message.conversationId).emit(`MESSAGE_RECEIVED`, message)
     });
     socket.on('USER_JOIN', (room) => {
-        console.log(`joined ${room}`);
+        // console.log(`joined ${room}`);
         socket.join(room);
     });
+    socket.on('CREATE_CONVERSATION', conversation => {
+        const keys = Object.keys(users);
+        conversation.participants.forEach(c => {
+            keys.forEach(id => {
+                if (users[id] === c) {
+                    io.to(id).emit('CONVERSATION_RECEIVE', conversation);
+                }
+            })
+        })
+
+        // conversation.participants.forEach(c => {
+        //     if (keys.some(id => users[id] === c)) {
+        //         console.log(socket.id)
+        //         socket.to(socket.id).emit('CONVERSATION_RECEIVE', conversation);
+        //     }
+        // })
+    })
     socket.on('USER_LEAVE', (room) => {
         console.log(`left ${room}`);
         socket.leave(room);
     })
     socket.on('USER_CONNECTED', (user) => {
-        socket.emit('USER_CONNECTED', user)
+        users[socket.id] = user._id;
     })
 });
 

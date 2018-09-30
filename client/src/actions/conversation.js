@@ -88,6 +88,51 @@ export const checkConversation = (companionId) => (dispatch) => {
         .catch(err => dispatch(checkConversationFailed(err)))
 };
 
+const createConversationRequest = () => ({
+	type: 'CREATE_CONVERSATION_REQUEST',
+});
+
+export const createConversationSuccess = (conversation) => ({
+	type: 'CREATE_CONVERSATION_SUCCESS',
+	payload: {
+		conversation
+	}
+});
+
+const createConversationFailure = (err) => ({
+	type: 'CREATE_CONVERSATION_FAILURE',
+	payload: {
+		err: err || 'Something went wrong'
+	}
+})
+
+export const createConversation = (title, participants) => (dispatch) => {
+	const token = localStorage.getItem('token');
+	console.log(title, participants)
+	dispatch(createConversationRequest());
+
+	return fetch('http://localhost:5000/chat/conversation', {
+		method: 'post',
+		body: JSON.stringify({
+			title,
+			participants
+		}),
+		headers: {
+			'access-token': token,
+			'Content-Type': 'application/json',
+		}})
+		.then(res => res.json())
+		.then(data => {
+			console.log(data)
+			socket.emit('CREATE_CONVERSATION', data)
+		})
+		.catch(err => {
+			console.log(2)
+		})
+}
+
+
+
 export const addMessageStarted = createAction('[Conversation] Add message started');
 export const addMessageFailed = createAction('[Conversation] Add message failed');
 

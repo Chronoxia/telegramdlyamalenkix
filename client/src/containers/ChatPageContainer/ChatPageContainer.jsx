@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react'
-import socket from "../../socket";
-import { getConversations } from '../../actions/conversation';
-import ChatPage from "components/ChatPage";
 import {connect} from "react-redux";
-import { addMessageSuccess } from '../../actions/conversation';
+
+import socket from "../../socket";
+import { 
+    getConversations, 
+    addMessageSuccess, 
+    createConversationSuccess, 
+} from '../../actions/conversation';
+import ChatPage from "components/ChatPage";
 
 class ChatPageContainer extends PureComponent {
     componentDidMount() {
@@ -14,9 +18,13 @@ class ChatPageContainer extends PureComponent {
     initSocket() {
         const { user } = this.props;
         socket.emit('USER_CONNECTED', user)
-        const { addMessageSuccess } = this.props;
+        const { addMessageSuccess, addConversation } = this.props;
         socket.on('MESSAGE_RECEIVED', (message) => {
             addMessageSuccess(message);
+        })
+        socket.on('CONVERSATION_RECEIVE', (conversation) => {
+            addConversation(conversation);
+            socket.emit('USER_JOIN', conversation.id)
         })
     }
 
@@ -44,6 +52,7 @@ function mapStateToProps(state, props) {
 const mapDispatchToProps = (dispatch, ownProps) => ({
     getConversations: () => dispatch(getConversations()),
     addMessageSuccess: (message) => dispatch(addMessageSuccess(message)),
+    addConversation: (conversation) => dispatch(createConversationSuccess(conversation)),
 })
 
 export default connect(

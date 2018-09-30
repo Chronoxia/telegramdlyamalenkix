@@ -53,12 +53,20 @@ router.get('/conversations',checkAuth, (req, res) => {
 router.post('/conversation', checkAuth, (req, res) => {
     const { participants, title } = req.body;
     User.find({_id: {$in: participants}})
-        .then(() => Conversation.create({
-            participants: participants,
+        .then((users) => Conversation.create({
+            participants: users.map((user) => user._id),
             title
         }))
-        .then((conversation) => res.status(200).send({conversation}))
-        .catch(err => console.log(err));
+        .then(c => Message.find({ conversationId: c._id}).then(messages => {
+            return { 
+                title: c.title,
+                id: c._id,
+                participants: c.participants, 
+                lastMessages: messages
+            }
+        }))
+        .then((conversation) => res.status(200).json(conversation))
+        .catch(err => res.status(500).send(err));
 });
 
 router.get('/conversation/:companionId', checkAuth, (req, res) => {

@@ -40,7 +40,6 @@ export default handleActions({
             ...state,
             user: action.payload
         }
-
     },
     [loginFailed]: (state, action) => {
         return {

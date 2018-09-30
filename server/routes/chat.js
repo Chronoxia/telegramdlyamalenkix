@@ -34,7 +34,6 @@ router.get('/conversations',checkAuth, (req, res) => {
                     title = companion.nickname
                 }
                 Message.find({ conversationId: _id })
-                    .limit(20)
                     .populate({
                         path: 'user',
                         select: 'nickname'

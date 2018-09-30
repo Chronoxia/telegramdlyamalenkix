@@ -21,12 +21,6 @@ class SignUpContainer extends PureComponent {
     }
 }
 
-function mapStateToProps(state, props) {
-    return {
-        ...props
-    }
-}
-
 function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
@@ -34,4 +28,4 @@ function mapDispatchToProps(dispatch, props) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpContainer)
+export default connect(null, mapDispatchToProps)(SignUpContainer)

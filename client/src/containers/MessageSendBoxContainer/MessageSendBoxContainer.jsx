@@ -31,7 +31,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
-        addMessage: (message, conversationId, authorId) => dispatch(addMessage(message, conversationId, authorId, companionId)),
+        addMessage: (message, conversationId, authorId) => dispatch(addMessage(message, conversationId, authorId)),
     }
 }
 

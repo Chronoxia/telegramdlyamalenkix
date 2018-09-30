@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const conversations = (state = initialState, action) => {
-  const copy = JSON.parse(JSON.stringify(state));
   switch (action.type) {
     case 'REQUEST_CONVERSATIONS': 
       return {

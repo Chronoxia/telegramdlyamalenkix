@@ -1,0 +1,24 @@
+.search {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.search__users {
+    width: 100%;
+    top: 35px;
+    list-style: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #afc8b1;
+    box-shadow: 0 0 15px 0 rgba(87,189,148,1);
+}
+
+.search__users li {
+    cursor: pointer;
+}
+
+.search__user-nickname {
+    color: #81d680;
+    font-weight: 600;
+    font-size: 16px;
+}

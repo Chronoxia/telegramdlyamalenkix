@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
-import userReducer from 'reducers/user';
-import usersReducer from 'reducers/users';
+import userReducer from './user';
+import usersReducer from './users';
 import conversations from './conversations';
+import searchedUsers from './searchedUsers';
 
 
 export default combineReducers({
     user: userReducer,
     users: usersReducer,
     conversations,
+    searchedUsers
 })

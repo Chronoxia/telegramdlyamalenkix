@@ -105,8 +105,9 @@ router.post('/message', checkAuth, (req, res) => {
 
 router.get('/searchUsers/:input',  checkAuth, (req, res) => {
     const { input } = req.params;
-    const pattern = /^${input}/;
+    const pattern = `^${input}`;
     User.find({email:{$regex: pattern}})
+        .select('-password')
         .then((users) => res.status(200).json(users))
         .catch((err) => console.log(err))
 });

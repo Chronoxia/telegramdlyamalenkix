@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, {Fragment, PureComponent} from 'react'
 import {connect} from "react-redux";
 
 import { loadUsers } from 'actions/users'
 import { checkConversation } from 'actions/conversation'
 import UsersList from "components/UsersList";
+import AutocompleteContainer from "containers/AutocompleteContainer";
 
 
 class UsersListContainer extends PureComponent {
@@ -21,7 +22,10 @@ class UsersListContainer extends PureComponent {
     render() {
         const { users } = this.props;
         return (
-            <UsersList users={users} chooseUser={this.chooseUser}/>
+            <Fragment>
+                <AutocompleteContainer/>
+                <UsersList users={users} chooseUser={this.chooseUser}/>
+            </Fragment>
         );
     }
 }

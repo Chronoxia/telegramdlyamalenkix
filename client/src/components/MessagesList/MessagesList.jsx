@@ -18,7 +18,7 @@ class MessagesList extends PureComponent {
                 <div className="messages">
                     { id
                         ? (lastMessages && lastMessages.length
-                        ? lastMessages.map((message) =>  {console.log(message); return <Message key={message._id} text={message.text} author={message.author} userId={userId}/>})
+                        ? lastMessages.map((message) =>  { return <Message key={message._id} text={message.text} author={message.author} userId={userId}/>})
                             : null)
                         : <span className="inform-message">Please select any chat to start messaging</span>
                     }

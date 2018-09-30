@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
 import {connect} from "react-redux";
 
-import { login } from 'actions/user'
+import { login } from 'actions/user';
 
 import LogIn from "components/LogIn";
 
@@ -21,12 +21,6 @@ class LogInContainer extends PureComponent {
     }
 }
 
-function mapStateToProps(state, props) {
-    return {
-        ...props
-    }
-}
-
 function mapDispatchToProps(dispatch, props) {
     return {
         ...props,
@@ -34,4 +28,4 @@ function mapDispatchToProps(dispatch, props) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogInContainer)
+export default connect(null, mapDispatchToProps)(LogInContainer)

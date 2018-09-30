@@ -39,7 +39,6 @@ export const getConversations = () => (dispatch) => {
 };
 
 export const addMessage  = (text, conversationId, authorId) => (dispatch) => {
-    console.log(666, text, conversationId, authorId);
     const token = localStorage.getItem('token');
     dispatch(addMessageStarted());
     fetch(`http://localhost:5000/chat/message`, {

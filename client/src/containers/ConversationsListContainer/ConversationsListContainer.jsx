@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import {connect} from "react-redux";
 import socket from '../../socket';
-import { openConversation, changeConversation } from 'actions/conversation'
+import { changeConversation } from 'actions/conversation'
 import ConversationsList from "components/ConversationsList";
 import { 
     getAllConversations, 
@@ -9,7 +9,6 @@ import {
 
 class ConversationsListContainer extends PureComponent {
     componentDidMount() {
-        console.log(this.props.conversations);
         this.props.conversations.forEach(conversation => {
             socket.emit('USER_JOIN', conversation.id)
         })

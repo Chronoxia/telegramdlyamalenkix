@@ -29,8 +29,8 @@ router.get('/conversations',checkAuth, (req, res) => {
             conversations.forEach((conversation) => {
                 let { title, _id, participants } = conversation;
                 if(!title) {
-                    const indexOfUser = conversation.participants.indexOf(userId);
-                    const companion = conversation.participants.splice(indexOfUser, 1)[0];
+                    const indexOfUser = participants.map((user) => user._id.toString()).indexOf(userId.toString());
+                    const companion = participants.filter((item, index) => index !== indexOfUser)[0];
                     title = companion.nickname
                 }
                 Message.find({ conversationId: _id })
@@ -40,8 +40,9 @@ router.get('/conversations',checkAuth, (req, res) => {
                         select: 'nickname'
                     })
                     .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title, id: _id, participants };
+                        fullConversations[_id] = {lastMessages: messages, title, id: _id };
                         if (Object.keys(fullConversations).length === conversations.length) {
+                            // console.log(fullConversations);
                             return res.status(200).json({ conversations: fullConversations });
                         }
                     })

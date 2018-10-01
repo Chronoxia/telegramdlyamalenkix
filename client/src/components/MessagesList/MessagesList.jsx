@@ -10,6 +10,7 @@ const MessagesList = ({
         {conversation.lastMessages.map((message) =>  (
                 <Message key={message._id}
                          text={message.text}
+                         id={message._id}
                          author={message.author}
                          userId={userId}/>
             ))

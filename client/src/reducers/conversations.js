@@ -8,6 +8,7 @@ const initialState = {
 };
 
 const conversations = (state = initialState, action) => {
+  const copy = JSON.parse(JSON.stringify(state));
   switch (action.type) {
     case 'REQUEST_CONVERSATIONS': 
       return {
@@ -60,6 +61,9 @@ const conversations = (state = initialState, action) => {
              }
            }
          }
+      case 'DELETE_MESSAGE_SUCCESS':
+        copy.conversations[action.payload.conversationId].lastMessages = copy.conversations[action.payload.conversationId].lastMessages.filter(m => m._id !== action.payload._id);
+        return copy;  
     default:
       return state;
   }

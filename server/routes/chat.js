@@ -108,7 +108,7 @@ router.post('/message', checkAuth, (req, res) => {
 
 });
 
-router.put('/removeMessage/:id', checkAuth, (req, res) => {
+router.put('/removeMessage/:messageId', checkAuth, (req, res) => {
     const { userId } = req;
     const { messageId } = req.params;
     Message.findByIdAndUpdate(

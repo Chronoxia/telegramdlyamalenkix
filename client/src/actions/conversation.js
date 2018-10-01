@@ -12,7 +12,7 @@ const getConversationsSuccess = (data) => ({
 });
 
 const getConversationsFailure = (err) => ({
-	type: 'GET_CONVERSATIONS_ERROR',
+	type: 'GET_CONVERSATIONS_FAILURE',
 	payload: {
 		err: err || 'Something went wrong',
 	}

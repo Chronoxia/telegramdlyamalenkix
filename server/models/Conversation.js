@@ -6,6 +6,7 @@ const ConversationSchema = new Schema({
         type: String,
     },
     participants: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    messagesLists: [{ type: Schema.Types.ObjectId, ref: 'MessageList'}],
 });
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

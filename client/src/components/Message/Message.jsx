@@ -7,7 +7,6 @@ class Message extends PureComponent {
     getRawMarkup(text) {
         const md = new Remarkable();
         const markdown = md.render(text);
-        console.log(markdown);
         return { __html: markdown }
     }
 

@@ -6,7 +6,6 @@ router.use(bodyParser.json());
 
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
-const MessagesList = require('../models/MessagesList');
 const User = require('../models/User');
 
 const checkAuth = require('../middlewares/auth/checkAuth');
@@ -21,7 +20,7 @@ router.get('/users', checkAuth, (req, res) => {
 
 router.get('/conversations',checkAuth, (req, res) => {
     const { userId } = req;
-    Conversation.find({participants: { $all :[userId]}})
+    Conversation.find({participants: userId})
         .populate({
             path: 'participants',
         })
@@ -37,7 +36,7 @@ router.get('/conversations',checkAuth, (req, res) => {
                     const companion = participants.filter((item, index) => index !== indexOfUser)[0];
                     title = companion.nickname
                 }
-                Message.find({ conversationId: _id })
+                Message.find({ conversationId: _id, available: userId} )
                     .populate({
                         path: 'user',
                         select: 'nickname'
@@ -56,12 +55,13 @@ router.get('/conversations',checkAuth, (req, res) => {
 
 router.post('/conversation', checkAuth, (req, res) => {
     const { participants, title } = req.body;
+    const { userId } = req;
     User.find({_id: {$in: participants}})
         .then((users) => Conversation.create({
             participants: users.map((user) => user._id),
             title
         }))
-        .then(c => Message.find({ conversationId: c._id}).then(messages => {
+        .then(c => Message.find({ conversationId: c._id, available: userId}).then(messages => {
             return { 
                 title: c.title,
                 id: c._id,
@@ -99,12 +99,24 @@ router.post('/message', checkAuth, (req, res) => {
                 conversationId: conversation._id,
                 author: authorId,
                 text,
+                available: conversation.participants,
             })
         ))
         .then((message) => {
             return res.status(200).json(message)
         })
 
+});
+
+router.put('/removeMessage/:id', checkAuth, (req, res) => {
+    const { userId } = req;
+    const { messageId } = req.params;
+    Message.findByIdAndUpdate(
+        messageId,
+        { $pull: { available: userId } },
+    ).then((message) => {
+        return res.status(200).json(message)
+    })
 });
 
 router.get('/searchUsers/:input',  checkAuth, (req, res) => {

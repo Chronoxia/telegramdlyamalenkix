@@ -26,6 +26,9 @@ router.get('/conversations',checkAuth, (req, res) => {
         })
         .then((conversations) => {
             const fullConversations = {};
+            if (!conversations.length) {
+                return res.status(200).json({ conversations: fullConversations });
+            }
             conversations.forEach((conversation) => {
                 let { title, _id, participants } = conversation;
                 if(!title) {

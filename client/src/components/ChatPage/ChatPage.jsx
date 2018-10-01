@@ -4,13 +4,12 @@ import {
     Col,
 } from "react-bootstrap";
 
-import "./ChatPage.css"
-
 import ConversationsListContainer from "containers/ConversationsListContainer";
-import MessagesListContainer from "containers/MessagesListContainer";
+import ChatContainer from "containers/ChatContainer";
 import UsersListContainer from "containers/UsersListContainer/UsersListContainer";
+import "./ChatPage.css";
 
-export default class ChatPage extends PureComponent {
+class ChatPage extends PureComponent {
     render() {
         const { user } = this.props;
         return (
@@ -28,10 +27,12 @@ export default class ChatPage extends PureComponent {
                         <UsersListContainer/>
                     </Col>
                     <Col xs={9}>
-                        <MessagesListContainer/>
+                        <ChatContainer />
                     </Col>
                 </Row>
             </Fragment>
         );
     }
 }
+
+export default ChatPage;

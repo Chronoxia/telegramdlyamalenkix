@@ -14,7 +14,7 @@ const handleToken = require('./middlewares/auth/handleToken');
 const socketCofiguration = require('./socketConfiguration');
 
 const corsOptions = {
-    origin: ['http://localhost:4200', 'http://localhost:8080']
+    origin: ['http://localhost:4200', 'http://localhost:8080', 'http://localhost:8081']
 };
 
 app.use(cors(corsOptions));
@@ -60,18 +60,11 @@ io.on('connection', socket => {
                 }
             })
         })
-
-        // conversation.participants.forEach(c => {
-        //     if (keys.some(id => users[id] === c)) {
-        //         console.log(socket.id)
-        //         socket.to(socket.id).emit('CONVERSATION_RECEIVE', conversation);
-        //     }
-        // })
-    })
+    });
     socket.on('USER_LEAVE', (room) => {
         console.log(`left ${room}`);
         socket.leave(room);
-    })
+    });
     socket.on('USER_CONNECTED', (user) => {
         users[socket.id] = user._id;
     })

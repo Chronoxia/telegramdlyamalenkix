@@ -1,13 +1,40 @@
 import React, { PureComponent } from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import { login } from 'actions/user';
-
 import LogIn from "components/LogIn";
 
 class LogInContainer extends PureComponent {
 
-    handleSubmit = (type, user) => {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            user: {
+                email: '',
+                password: '',
+            },
+            submitted: false,
+        };
+    }
+
+    handleChange = event => {
+        const { name, value } = event.target;
+        const { user } = this.state;
+        this.setState({
+            user: {
+                ...user,
+                [name]: value,
+            }
+        });
+    };
+
+    handleSubmit = event => {
+        event.preventDefault();
+
+        this.setState({ submitted: true });
+        const { user } = this.state;
+
         const { login } = this.props;
         if (user.email && user.password) {
             login(user);
@@ -16,16 +43,18 @@ class LogInContainer extends PureComponent {
 
     render() {
         return (
-            <LogIn handleSubmit={this.handleSubmit}/>
+            <LogIn
+                handleSubmit={ this.handleSubmit }
+                handleChange={ this.handleChange }
+                { ...this.state }
+            />
         );
     }
 }
 
-function mapDispatchToProps(dispatch, props) {
-    return {
-        ...props,
-        login: (user) => dispatch(login(user)),
-    }
-}
+const mapDispatchToProps = (dispatch, props) => ({
+    ...props,
+    login: (user) => dispatch(login(user)),
+});
 
 export default connect(null, mapDispatchToProps)(LogInContainer)

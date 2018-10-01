@@ -8,7 +8,7 @@ class Modal extends Component {
     title: 'Name',
     isEditing: false,
     participants: [],
-  }
+  };
 
   renderTitle() {
     const { title, isEditing } = this.state;
@@ -41,39 +41,47 @@ class Modal extends Component {
 
   handleBlur = (e) => {
     this.handleSave(e.target.value);
-  }
+  };
 
   handleKeyDown = (e) => {
     if (e.which === 13) {
       const text = this.state.title.trim();
       this.handleSave(text);
     }
-  }
+  };
 
   handleDoubleClick = () => {
     this.setState({
       isEditing: true,
     })
-  }
+  };
 
   handleSave = (text) => {
     this.setState({
       title: text,
       isEditing: false,
     })
-  }
+  };
 
   handleClick = (user) => {
     this.setState({
       participants: this.state.participants.concat(user)
     })
-  }
+  };
+
+  handleSend = () => {
+    const { createConversation, closeModal } = this.props;
+
+    createConversation(this.state.title, this.state.participants);
+    this.props.closeModal();
+  };
 
   render() {
-    const { createConversation, cancel, users } = this.props;
+    const { createConversation, cancel, users, isOpen } = this.props;
 
     return (
-      <div>
+      <div className={isOpen ? 'modal display-block' : 'modal display-none'}>
+        <div className="modal-main">
         { this.renderTitle() }
         <ul>
           {users.map(u => (
@@ -101,15 +109,16 @@ class Modal extends Component {
           ))}
         </ul>
         <button
-          onClick={ () => createConversation(this.state.title, this.state.participants) }
+          onClick={ this.handleSend }
         >
           Create
         </button>
         <button
-          onClick={ () => cancel() }
+          onClick={ this.props.closeModal }
         >
           Close
         </button>
+        </div>
       </div>
     )
   }
@@ -119,7 +128,8 @@ const mapStateToProps = (state) => ({
   users: state.users.entities,
 })
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, props) => ({
+    ...props,
   getUsers: () => console.log('yay!'),
   createConversation: (title, participants) => dispatch(createConversation(title, participants)),
   cancel: () => console.log('yay!'),

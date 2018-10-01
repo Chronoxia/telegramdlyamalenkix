@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import socket from "../../socket";
 import { 
@@ -17,11 +17,11 @@ class ChatPageContainer extends PureComponent {
 
     initSocket() {
         const { user } = this.props;
-        socket.emit('USER_CONNECTED', user)
+        socket.emit('USER_CONNECTED', user);
         const { addMessageSuccess, addConversation } = this.props;
         socket.on('MESSAGE_RECEIVED', (message) => {
             addMessageSuccess(message);
-        })
+        });
         socket.on('CONVERSATION_RECEIVE', (conversation) => {
             addConversation(conversation);
             socket.emit('USER_JOIN', conversation.id)
@@ -41,22 +41,20 @@ class ChatPageContainer extends PureComponent {
     }
 }
 
-function mapStateToProps(state, props) {
-    return {
-        ...props,
-        user: state.user.user,
-        isFetching: state.conversations.isFetching,
-    }
-}
+const mapStateToProps = (state, props) => ({
+    ...props,
+    user: state.user.user,
+    isFetching: state.conversations.isFetching,
+});
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch, props) => ({
     getConversations: () => dispatch(getConversations()),
     addMessageSuccess: (message) => dispatch(addMessageSuccess(message)),
     addConversation: (conversation) => dispatch(createConversationSuccess(conversation)),
-})
+});
 
 export default connect(
     mapStateToProps, 
     mapDispatchToProps
-)(ChatPageContainer)
+)(ChatPageContainer);
 

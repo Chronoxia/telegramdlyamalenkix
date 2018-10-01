@@ -1,39 +1,16 @@
-import React, { Component } from 'react';
-import ReactDom from 'react-dom';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
-import { Provider } from 'react-redux'
-import {
-    Grid,
-} from "react-bootstrap";
+import React from 'react';
+import { render } from 'react-dom';
+import Root from "components/Root";
+import configureStore from './store';
+import { checkAuth } from "actions/user";
+import './index.css';
 
-import history from './history';
-import store from './store';
-import './index.css'
-import routes from "./routes";
-import ChatPageContainer from "./containers/ChatPageContainer/ChatPageContainer";
-import ProtectedRoute from "./containers/ProtectedRoute/ProtectedRoute";
-import { checkAuth } from "./actions/user";
+// localStorage.clear();
 
-class App extends Component {
-    constructor() {
-        super();
-        store.dispatch(checkAuth())
-    }
+const store = configureStore();
+store.dispatch(checkAuth());
 
-    render() {
-        return (
-            <Provider store={store}>
-                <Router history={history}>
-                    <Grid fluid={true}>
-                        <Switch>
-                            {routes.map((route, idx) => <Route key={idx} {...route}/> )}
-                            <ProtectedRoute path='/chat' component={ChatPageContainer} />
-                        </Switch>
-                    </Grid>
-                </Router>
-            </Provider>
-        )
-    }
-}
-
-ReactDom.render(<App />, document.getElementById('root'));
+render(
+    <Root store={store}/>,
+    document.getElementById('root')
+);

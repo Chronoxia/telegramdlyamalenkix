@@ -1,28 +1,47 @@
 import React, { PureComponent} from 'react';
-import "./UsersList.css"
+import Modal from 'containers/Modal';
+import "./UsersList.css";
 
 
 export default class UsersList extends PureComponent {
-	state = {
-		isOpen: false,
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isOpen: false,
+		}
 	}
 
-	handleToggle = () => {
-		console.log(this.state.isOpen);
+	showModal = () => {
 		this.setState({
-			isOpen: !this.state.isOpen,
+			isOpen: true,
+		});
+	};
+
+	closeModal = () => {
+		this.setState({
+			isOpen: false,
 		})
-		console.log(this.state.isOpen);
-	}
+	};
 
 	render() {
+		console.log(this.props);
 		const { users, chooseUser } = this.props;
 		return (
 			<ul className="users-list">
-					{ users && users.length ? users.map((user) =>
-							<li className="users-item" key={user._id} onClick={chooseUser.bind(null, user._id)}>{user.nickname}</li>) : null }
+					{ users.map((user) => (
+							<li className="users-item"
+								key={user._id}
+								onClick={chooseUser.bind(null, user._id)}>
+								{user.nickname}
+							</li>))
+					}
+					<Modal
+						isOpen={ this.state.isOpen }
+						closeModal={ this.closeModal }
+					/>
 				<button
-						onClick={ this.handleToggle }
+						onClick={ this.showModal }
 				>
 						+
 				</button>

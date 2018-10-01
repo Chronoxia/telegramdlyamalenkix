@@ -5,15 +5,40 @@ import { addMessage } from "actions/conversation";
 import MessageSendBox from "../../components/MessageSendBox/MessageSendBox";
 
 class MessageSendBoxContainer extends PureComponent {
+    constructor(props) {
+        super(props);
 
-    addNewMessage = (message) => {
-        const { addMessage, conversationId,  userId, companionId } = this.props;
-        addMessage(message, conversationId, userId, companionId);
+        this.state = {
+            message: {
+                text: '',
+            }
+        };
+    }
+
+    handleChange = event => {
+        this.setState({
+            message: {
+                text:  event.target.value
+            }
+        });
+    };
+
+    sendMessage = () => {
+        const { message } = this.state;
+        const  { addMessage, conversationId, userId, companionId } = this.props;
+        addMessage(message.text, conversationId, userId, companionId );
+        this.setState({
+            message: {
+                text: ''
+            }
+        });
     };
 
     render() {
         return (
-            <MessageSendBox addNewMessage={this.addNewMessage}/>
+            <MessageSendBox  message={ this.state.message }
+                             sendMessage={ this.sendMessage }
+                             handleChange={ this.handleChange }/>
         );
     }
 }

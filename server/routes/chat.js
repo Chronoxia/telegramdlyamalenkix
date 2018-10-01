@@ -6,6 +6,7 @@ router.use(bodyParser.json());
 
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
+const MessagesList = require('../models/MessagesList');
 const User = require('../models/User');
 
 const checkAuth = require('../middlewares/auth/checkAuth');

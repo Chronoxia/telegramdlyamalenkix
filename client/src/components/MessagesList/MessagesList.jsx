@@ -5,6 +5,8 @@ import './MessagesList.css';
 const MessagesList = ({
     conversation,
     userId,
+    handleToggle,
+    messages
 }) => (
     <div className="messages">
         {conversation.lastMessages.map((message) =>  (
@@ -12,7 +14,9 @@ const MessagesList = ({
                          text={message.text}
                          id={message._id}
                          author={message.author}
-                         userId={userId}/>
+                         userId={userId}
+                         messages={messages}
+                         handleToggle={handleToggle}/>
             ))
         }
     </div>

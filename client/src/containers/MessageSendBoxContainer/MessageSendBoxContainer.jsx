@@ -23,8 +23,15 @@ class MessageSendBoxContainer extends PureComponent {
         });
     };
 
+    handleKeyDown = event => {
+        if (event.which === 13) {
+            this.sendMessage();
+        }
+    };
+
     sendMessage = () => {
         const { message } = this.state;
+        if (!this.state.message.text.trim()) return;
         const  { addMessage, conversationId, userId, companionId } = this.props;
         addMessage(message.text, conversationId, userId, companionId );
         this.setState({
@@ -38,7 +45,9 @@ class MessageSendBoxContainer extends PureComponent {
         return (
             <MessageSendBox  message={ this.state.message }
                              sendMessage={ this.sendMessage }
-                             handleChange={ this.handleChange }/>
+                             handleChange={ this.handleChange }
+                             handleKeyDown={ this.handleKeyDown }
+                             />
         );
     }
 }

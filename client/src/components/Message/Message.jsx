@@ -15,17 +15,22 @@ class Message extends PureComponent {
 
     handleClick = () => {
         const { id, deleteMessage } = this.props;
-        console.log(this.props);
         deleteMessage(id);
-    }
+    };
+
+    handleToggle = () => {
+        console.log(this.props)
+        // this.props.handleToggle(this.props.id);
+    };
 
     render() {
-        const { text, author, userId } = this.props;
+        const { text, author, userId, id } = this.props;
+        const check = this.props.messages.some(m => m === id)
         return (
-            <div className={ author === userId ? "client-message" : "message" }>
+            <div className={ author === userId ? "client-message" : "message" } style={{ backgroundColor: check ? 'black' }} onClick={ this.handleToggle }>
                 <span
                     style={{ cursor: 'pointer' }}
-                    onClick={this.handleClick}
+                    onClick={ this.handleClick }
                 >
                     x
                 </span>
@@ -38,6 +43,6 @@ class Message extends PureComponent {
 const mapDispatchToProps = (dispatch, props) => ({
     ...props,
     deleteMessage: (id) => dispatch(deleteMessage(id))
-})
+});
 
 export default connect(null, mapDispatchToProps)(Message);

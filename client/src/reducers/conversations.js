@@ -60,7 +60,7 @@ const conversations = (state = initialState, action) => {
                ...action.payload.conversation,
              }
            }
-         }
+         };
       case 'DELETE_MESSAGE_SUCCESS':
         copy.conversations[action.payload.conversationId].lastMessages = copy.conversations[action.payload.conversationId].lastMessages.filter(m => m._id !== action.payload._id);
         return copy;  

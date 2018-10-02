@@ -20,14 +20,15 @@ class Message extends PureComponent {
 
     handleToggle = () => {
         console.log(this.props)
-        // this.props.handleToggle(this.props.id);
+        this.props.handleToggle(this.props.id);
     };
 
     render() {
         const { text, author, userId, id } = this.props;
         const check = this.props.messages.some(m => m === id)
         return (
-            <div className={ author === userId ? "client-message" : "message" } style={{ backgroundColor: check ? 'black' }} onClick={ this.handleToggle }>
+            <div className={ author === userId ? "client-message" : "message" } 
+                style={{ border: check ? '1px solid lightblue' : 'none' }} onClick={ this.handleToggle }>
                 <span
                     style={{ cursor: 'pointer' }}
                     onClick={ this.handleClick }

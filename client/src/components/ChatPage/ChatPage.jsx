@@ -1,35 +1,22 @@
-import React, {Fragment, PureComponent} from 'react';
-import {
-    Row,
-    Col,
-} from "react-bootstrap";
+import React from 'react';
 
 import ConversationsListContainer from "containers/ConversationsListContainer";
 import ChatContainer from "containers/ChatContainer";
-import UsersListContainer from "containers/UsersListContainer/UsersListContainer";
-import "./ChatPage.css";
+import "./ChatPage.scss";
 
 const ChatPage = ({
     user
 }) => (
-    <Fragment>
-        <Row>
-            <Col xs={12}>
-                <div className="user-info">
-                    {user.nickname}
-                </div>
-            </Col>
-        </Row>
-        <Row className="chat-page">
-            <Col xs={3}>
-                <ConversationsListContainer/>
-                <UsersListContainer/>
-            </Col>
-            <Col xs={9}>
-                <ChatContainer />
-            </Col>
-        </Row>
-    </Fragment>
+    <div className="chat-page">
+        <div className="user-info">
+            <img className="user-info__image" src={user.image || "https://otvet.imgsmail.ru/download/1448bb4efce8f11e7e5dd8578869146b_i-57.jpg"}/>
+            <span className="user-info__nickname">{user.nickname}</span>
+        </div>
+        <div className="chat-box">
+            <div className="chat-box__conversations"><ConversationsListContainer/></div>
+            <div className="chat-box__chat"><ChatContainer/></div>
+        </div>
+    </div>
 );
 
 export default ChatPage;

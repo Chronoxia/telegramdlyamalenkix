@@ -29,10 +29,10 @@ class Chat extends Component {
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
-            <Col xs={12} className={conversation.id || chosenUser ? "messages-list" : "not-selected-conversation"}>
+            <div className={conversation.id || chosenUser ? "messages-list" : "not-selected-conversation"}>
                 <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
                 {(conversation.id || chosenUser) && <MessageSendBoxContainer/>}
-            </Col>
+            </div>
         )
     }
 };

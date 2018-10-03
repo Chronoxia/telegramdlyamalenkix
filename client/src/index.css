@@ -2,6 +2,10 @@ body {
     background-color: #daf5d3;
 }
 
+html, body, #root {
+    height: 100%
+}
+
 .modal {
     position: fixed;
     top: 0;

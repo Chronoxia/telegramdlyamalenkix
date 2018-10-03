@@ -9,6 +9,7 @@ class Modal extends Component {
     title: 'Name',
     isEditing: false,
     participants: [],
+    image: null,
   };
 
   componentDidMount() {
@@ -55,6 +56,19 @@ class Modal extends Component {
     }
   };
 
+  handlePic = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    if (!file) return;
+    reader.onload = (r) => {
+        this.setState({
+          image: r.target.result
+        })
+    }
+    reader.readAsDataURL(file);
+}
+
   handleDoubleClick = () => {
     this.setState({
       isEditing: true,
@@ -76,18 +90,21 @@ class Modal extends Component {
 
   handleSend = () => {
     const { createConversation, closeModal } = this.props;
+    const { title, participants, image } = this.state;
 
-    createConversation(this.state.title, this.state.participants);
-    this.props.closeModal();
+    createConversation(title, participants, image);
+    closeModal();
   };
 
   render() {
-    const { createConversation, cancel, users, isOpen } = this.props;
+    const { users, isOpen } = this.props;
 
     return (
       <div className={isOpen ? 'modal display-block' : 'modal display-none'}>
         <div className="modal-main">
         { this.renderTitle() }
+        <input type="file" name="img" onChange={ this.handlePic }/>
+        { this.state.image && <img src={this.state.image} style={{ width: '100px', height: '100px'}} />}
         <ul>
           {users.map(u => (
             <li 
@@ -136,7 +153,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, props) => ({
     ...props,
   getUsers: () => dispatch(loadUsers()),
-  createConversation: (title, participants) => dispatch(createConversation(title, participants)),
+  createConversation: (title, participants, image) => dispatch(createConversation(title, participants, image)),
   cancel: () => console.log('yay!'),
 })
 

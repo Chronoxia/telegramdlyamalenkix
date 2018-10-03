@@ -20,8 +20,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use('/uploads', express.static('uploads'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(handleToken);
 app.use('/auth', AuthController);
 app.use('/users', UsersController);

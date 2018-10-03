@@ -107,7 +107,7 @@ const createConversationFailure = (err) => ({
 	}
 })
 
-export const createConversation = (title, participants) => (dispatch) => {
+export const createConversation = (title, participants, image) => (dispatch) => {
 	const token = localStorage.getItem('token');
 	console.log(title, participants);
 	dispatch(createConversationRequest());
@@ -116,7 +116,8 @@ export const createConversation = (title, participants) => (dispatch) => {
 		method: 'post',
 		body: JSON.stringify({
 			title,
-			participants
+			participants,
+			image
 		}),
 		headers: {
 			'access-token': token,

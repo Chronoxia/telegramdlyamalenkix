@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const User = require('../models/User');
 
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
@@ -60,17 +61,20 @@ router.get('/',checkAuth, (req, res) => {
  */
 
 router.post('/create', checkAuth, (req, res) => {
-    const { participants, title } = req.body;
+    const { participants, title, image } = req.body;
+    console.log(7, req.userId);
     const { userId } = req;
     User.find({_id: {$in: participants}})
         .then((users) => Conversation.create({
             participants: users.map((user) => user._id),
-            title
+            title,
+            image
         }))
         .then(c => Message.find({ conversationId: c._id, available: userId}).then(messages => {
             return {
                 title: c.title,
                 id: c._id,
+                image: c.image,
                 participants: c.participants,
                 lastMessages: messages
             }

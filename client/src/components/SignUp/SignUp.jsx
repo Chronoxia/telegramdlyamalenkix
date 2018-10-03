@@ -17,11 +17,12 @@ const SignUp = ({
     handleChange,
     user,
     submitted,
+    handlePic
 }) => (
     <Row>
         <Col className="sign-up-form" xs={6} xsOffset={3}>
             <h2>Sign Up</h2>
-            <form name="register" onSubmit={handleSubmit}>
+            <form name="register" onSubmit={handleSubmit} encType="multipart/form-data">
 
                 <FormGroup className={ submitted && !user.nickname ? ' has-error' : '' }>
                     <ControlLabel>Nickname</ControlLabel>
@@ -47,10 +48,18 @@ const SignUp = ({
                     { submitted && !user.passwordConfirm && <HelpBlock>Confirm is required</HelpBlock> }
                 </FormGroup>
 
+                <input 
+                    type="file"
+                    name="image"
+                    onChange={ handlePic }
+                />
+                { user.image && <img src={user.image} height="200" width="200" alt="profile picture"/> }
+
                 <FormGroup>
                     <Button type="submit">Register</Button>
                     <Link to="/login" className="btn btn-link">Already have an account?</Link>
                 </FormGroup>
+
             </form>
         </Col>
     </Row>

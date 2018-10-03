@@ -19,7 +19,6 @@ class Message extends PureComponent {
     };
 
     handleToggle = () => {
-        console.log(this.props)
         this.props.handleToggle(this.props.id);
     };
 

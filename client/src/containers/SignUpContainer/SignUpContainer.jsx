@@ -14,7 +14,8 @@ class SignUpContainer extends PureComponent {
                 nickname: '',
                 email: '',
                 password: '',
-                passwordConfirm: ''
+                passwordConfirm: '',
+                image: null,
             },
             submitted: false
         };
@@ -31,15 +32,32 @@ class SignUpContainer extends PureComponent {
         });
     };
 
+    handlePic = event => {
+        event.preventDefault();
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        if (!file) return;
+        reader.onload = (r) => {
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    image: r.target.result
+                }
+            })
+        }
+        reader.readAsDataURL(file);
+    }
+
     handleSubmit = event => {
         event.preventDefault();
 
         this.setState({ submitted: true });
         const { user } = this.state;
-
+        const formData = new FormData();
+        formData.append('productImage', this.state.user.productImage)
         const { register } = this.props;
         if (user.nickname && user.email && user.password && user.passwordConfirm) {
-            register(user);
+            register(formData);
         }
     };
 
@@ -48,6 +66,7 @@ class SignUpContainer extends PureComponent {
             <SignUp
                 handleSubmit={ this.handleSubmit }
                 handleChange={ this.handleChange }
+                handlePic={ this.handlePic }
                 { ...this.state }
             />
         );

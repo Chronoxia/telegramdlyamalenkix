@@ -1,23 +1,55 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
 const User = require('../models/User');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config/authConfig');
 
-router.post('/register', (req, res) => {
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.json());
+
+router.post('/register',upload.single('avatar'), (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
-    User.create({
+    const user = new User({
         nickname: req.body.nickname,
         email: req.body.email,
-        password: hashedPassword
-    })
+        password: hashedPassword,
+        image: req.file.path,
+    });
+    user.save()
         .then(user => {
+            console.log(user);
             const token = jwt.sign({id: user._id}, config.secret, {
                 expiresIn: 86400 //24 hours
             });

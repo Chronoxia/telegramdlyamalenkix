@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({extended: false}));
+// router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 
 const Conversation = require('../models/Conversation');
@@ -16,6 +16,15 @@ router.get('/users', checkAuth, (req, res) => {
         .then(users => {
             res.status(200).json(users)
         })
+});
+
+router.get('/searchUsers/:input',  checkAuth, (req, res) => {
+    const { input } = req.params;
+    const pattern = `^${input}`;
+    User.find({email:{$regex: pattern}})
+        .select('-password')
+        .then((users) => res.status(200).json(users))
+        .catch((err) => console.log(err))
 });
 
 router.get('/conversations',checkAuth, (req, res) => {
@@ -111,21 +120,38 @@ router.post('/message', checkAuth, (req, res) => {
 router.put('/removeMessage/:messageId', checkAuth, (req, res) => {
     const { userId } = req;
     const { messageId } = req.params;
-    Message.findByIdAndUpdate(
-        messageId,
+    Message.findOneAndUpdate(
+        { _id: messageId },
         { $pull: { available: userId } },
-    ).then((message) => {
-        return res.status(200).json(message)
+    )
+        .then((message) => {
+            return res.status(200).json(message)
+        })
+});
+
+router.put('/removeMessages', checkAuth, (req, res) => {
+    const { userId } = req;
+    const { messages } = req.body;
+    Message.updateMany(
+        { _id: {$in: messages} },
+        { $pull: { available: userId } },
+    )
+        .then((messages) => {
+        return res.status(200).json(messages)
     })
 });
 
-router.get('/searchUsers/:input',  checkAuth, (req, res) => {
-    const { input } = req.params;
-    const pattern = `^${input}`;
-    User.find({email:{$regex: pattern}})
-        .select('-password')
-        .then((users) => res.status(200).json(users))
-        .catch((err) => console.log(err))
+router.put('/removeAllMessages', checkAuth, (req, res) => {
+    const { userId } = req;
+    const { conversationId } = req.body;
+    Message.updateMany(
+        { conversationId },
+        { $pull: { available: userId } },
+    )
+        .then((messages) => {
+        return res.status(200).json(messages)
+    })
 });
+
 
 module.exports = router;

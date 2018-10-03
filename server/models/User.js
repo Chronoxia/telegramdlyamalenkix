@@ -15,6 +15,10 @@ const UserSchema = new Schema({
         type: String,
         require: true,
         min: 8
+    },
+    image: {
+        type: String,
+        require: true,
     }
 });
 

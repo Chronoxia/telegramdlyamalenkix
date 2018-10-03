@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require("express");
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
@@ -18,6 +19,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -27,7 +29,6 @@ mongoose
     .connect(db, {useNewUrlParser: true})
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
-
 
 app.use(handleToken);
 app.use('/api/auth', AuthController);

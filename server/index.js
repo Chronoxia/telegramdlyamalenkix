@@ -11,8 +11,8 @@ const AuthController = require('./routes/auth');
 const UsersController = require('./routes/users');
 const ConversationsController = require('./routes/conversations');
 const MessagesController = require('./routes/messages');
+const User = require('./models/User');
 const handleToken = require('./middlewares/auth/handleToken');
-const socketCofiguration = require('./socketConfiguration');
 
 const corsOptions = {
     origin: ['http://localhost:4200', 'http://localhost:8080', 'http://localhost:8081']
@@ -42,13 +42,17 @@ io.on('connection', socket => {
     console.log("User connected");
 
     socket.on('disconnect', () => {
+        console.log(users[socket.id]);
+        User.findByIdAndUpdate(
+            users[socket.id],
+            { online: false },
+            { upsert: true, new: true });
         delete users[socket.id];
     });
     socket.on('MESSAGE_ADD', (message) => {
         io.to(message.conversationId).emit(`MESSAGE_RECEIVED`, message)
     });
     socket.on('USER_JOIN', (room) => {
-        // console.log(`joined ${room}`);
         socket.join(room);
     });
     socket.on('CREATE_CONVERSATION', conversation => {
@@ -67,6 +71,11 @@ io.on('connection', socket => {
     });
     socket.on('USER_CONNECTED', (user) => {
         users[socket.id] = user._id;
+
+        User.findByIdAndUpdate(
+            user._id,
+            { online: true },
+            { upsert: true, new: true });
     })
 });
 

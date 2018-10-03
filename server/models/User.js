@@ -19,7 +19,13 @@ const UserSchema = new Schema({
     image: {
         type: String,
         require: true,
+    },
+    online: {
+        type: Boolean,
     }
+},
+{
+    timestamps: true
 });
 
 module.exports = mongoose.model('User', UserSchema);

@@ -15,6 +15,7 @@ router.use(bodyParser.json());
  * For getting all user's conversations
  * @param req.userId {String} - User's id
  */
+
 router.get('/',checkAuth, (req, res) => {
     const { userId } = req;
     Conversation.find({participants: userId})

@@ -56,6 +56,7 @@ export const addMessage  = (text, conversationId, authorId, companionId) => (dis
         }})
         .then(res => res.json())
         .then(message => {
+			console.log(message);
             socket.emit('MESSAGE_ADD', message)
         })
         .catch(err => dispatch(addMessageFailed(err)))

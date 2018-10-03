@@ -13,6 +13,7 @@ router.use(bodyParser.json());
  * route http://localhost:5000/users
  * For getting all users
  */
+
 router.get('/', checkAuth, (req, res) => {
     User.find()
         .select('-password')
@@ -26,6 +27,7 @@ router.get('/', checkAuth, (req, res) => {
  * For searching all users which email started with certain input
  * @param req.params.input {String} - pattern for searching users in db
  */
+
 router.get('/search/:input',  checkAuth, (req, res) => {
     const { input } = req.params;
     const pattern = `^${input}`;

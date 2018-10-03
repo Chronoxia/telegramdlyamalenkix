@@ -4,7 +4,7 @@ import history from '../history';
 export const register = (user) => (dispatch) => {
     dispatch(registerRequest());
 
-    fetch(`http://localhost:5000/api/auth/register`, {
+    fetch(`http://localhost:5000/auth/register`, {
         method: "post",
         body: JSON.stringify({
             nickname: user.nickname,
@@ -29,7 +29,7 @@ export const register = (user) => (dispatch) => {
 export const login = (user) => (dispatch) => {
     dispatch(loginRequest());
 
-    fetch(`http://localhost:5000/api/auth/login`, {
+    fetch(`http://localhost:5000/auth/login`, {
         method: "post",
         body: JSON.stringify({
             email: user.email,
@@ -54,7 +54,7 @@ export const checkAuth = () => (dispatch) => {
 
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:5000/api/auth/check-token`, {
+    fetch(`http://localhost:5000/auth/check-token`, {
         headers: {
             'access-token': token,
         }})

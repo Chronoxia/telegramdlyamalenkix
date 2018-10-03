@@ -29,7 +29,7 @@ export const getConversations = () => (dispatch) => {
 	const token = localStorage.getItem('token');
 	dispatch(requestConversations());
 
-	return fetch(`http://localhost:5000/chat/conversations`, {
+	return fetch(`http://localhost:5000/conversations`, {
 		method: 'get',
 		headers: {
 			'access-token': token,
@@ -42,7 +42,7 @@ export const getConversations = () => (dispatch) => {
 export const addMessage  = (text, conversationId, authorId, companionId) => (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(addMessageStarted());
-    fetch(`http://localhost:5000/chat/message`, {
+    fetch(`http://localhost:5000/messages/create`, {
         method: "post",
         body: JSON.stringify({
             text,
@@ -71,7 +71,7 @@ export const addMessageSuccess = (message) => ({
 export const checkConversation = (companionId) => (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(checkConversationStarted());
-    fetch(`http://localhost:5000/chat/conversation/${companionId}`, {
+    fetch(`http://localhost:5000/conversations/conversationByCompanion/${companionId}`, {
         method: "get",
         headers: {
             'access-token': token,
@@ -108,10 +108,10 @@ const createConversationFailure = (err) => ({
 
 export const createConversation = (title, participants) => (dispatch) => {
 	const token = localStorage.getItem('token');
-	console.log(title, participants)
+	console.log(title, participants);
 	dispatch(createConversationRequest());
 
-	return fetch('http://localhost:5000/chat/conversation', {
+	return fetch('http://localhost:5000/conversations/create', {
 		method: 'post',
 		body: JSON.stringify({
 			title,
@@ -123,11 +123,10 @@ export const createConversation = (title, participants) => (dispatch) => {
 		}})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data)
 			socket.emit('CREATE_CONVERSATION', data)
 		})
 		.catch(err => {
-			console.log(2)
+			console.log(err)
 		})
 }
 

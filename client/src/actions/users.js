@@ -3,7 +3,7 @@ import  { createAction } from 'redux-actions';
 export const loadUsers = () => (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(loadStarted());
-    fetch(`http://localhost:5000/chat/users`, {
+    fetch(`http://localhost:5000/users`, {
         method: "get",
         headers: {
             'access-token': token

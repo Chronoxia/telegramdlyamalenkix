@@ -3,7 +3,7 @@ import  { createAction } from 'redux-actions';
 export const searchUsers = (searchValue) => (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(searchStarted());
-    fetch(`http://localhost:5000/chat/searchUsers/${searchValue}`, {
+    fetch(` http://localhost:5000/users/search/${searchValue}`, {
         headers: {
             'access-token': token
         }})

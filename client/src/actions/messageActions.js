@@ -13,9 +13,9 @@ const deleteMessageSuccess = (message) => ({
 
 export const deleteMessage = (id) => (dispatch) => {
   const token = localStorage.getItem('token');
-  console.log(id);
-  return fetch(`http://localhost:5000/chat/removeMessage/${id}`, {
+  return fetch(`http://localhost:5000/messages/removeById`, {
     method: 'put',
+    body: JSON.stringify({ messageId: id }),
     headers: {
       'access-token': token,
       'Content-Type': 'application/json'

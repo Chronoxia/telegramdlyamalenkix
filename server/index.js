@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const AuthController = require('./routes/auth');
-const ChatController = require('./routes/chat');
-
+const UsersController = require('./routes/users');
+const ConversationsController = require('./routes/conversations');
+const MessagesController = require('./routes/messages');
 const handleToken = require('./middlewares/auth/handleToken');
-
 const socketCofiguration = require('./socketConfiguration');
 
 const corsOptions = {
@@ -22,21 +22,20 @@ app.use(cors(corsOptions));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(handleToken);
+app.use('/auth', AuthController);
+app.use('/users', UsersController);
+app.use('/conversations', ConversationsController);
+app.use('/messages', MessagesController);
 
-// DB Config
 const db = require('./config/keys').mongoURI;
 mongoose
     .connect(db, {useNewUrlParser: true})
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
-app.use(handleToken);
-app.use('/api/auth', AuthController);
-app.use('/chat', ChatController);
-
 
 const port = 5000;
-// socketId: userId
 const users = { };
 
 io.on('connection', socket => {

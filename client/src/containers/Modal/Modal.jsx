@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { createConversation } from '../../actions/conversation';
+import { createConversation } from 'actions/conversation';
+import { loadUsers } from "actions/users";
 
 class Modal extends Component {
   state = {
@@ -9,6 +10,10 @@ class Modal extends Component {
     isEditing: false,
     participants: [],
   };
+
+  componentDidMount() {
+    this.props.getUsers()
+  }
 
   renderTitle() {
     const { title, isEditing } = this.state;
@@ -130,7 +135,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
     ...props,
-  getUsers: () => console.log('yay!'),
+  getUsers: () => dispatch(loadUsers()),
   createConversation: (title, participants) => dispatch(createConversation(title, participants)),
   cancel: () => console.log('yay!'),
 })

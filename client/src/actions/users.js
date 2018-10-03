@@ -10,6 +10,7 @@ export const loadUsers = () => (dispatch) => {
         }})
         .then(res => res.json())
         .then(users => {
+            console.log(users);
             dispatch(loadComplete(users))
         })
         .catch(err => {

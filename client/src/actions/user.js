@@ -2,14 +2,14 @@ import  { createAction } from 'redux-actions';
 import history from '../history';
 
 export const register = (user) => (dispatch) => {
-    console.log(user);
-    return;
     dispatch(registerRequest());
 
     fetch(`http://localhost:5000/auth/register`, {
         method: "post",
-        body: user,
-        })
+        body: JSON.stringify({ ...user }),
+        headers: {
+            'Content-Type': 'application/json'
+        }})
         .then(res => res.json())
         .then(res => {
             dispatch(registerSuccess(res.user));

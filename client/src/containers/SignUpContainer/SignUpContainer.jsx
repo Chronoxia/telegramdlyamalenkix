@@ -53,11 +53,9 @@ class SignUpContainer extends PureComponent {
 
         this.setState({ submitted: true });
         const { user } = this.state;
-        const formData = new FormData();
-        formData.append('productImage', this.state.user.productImage)
         const { register } = this.props;
         if (user.nickname && user.email && user.password && user.passwordConfirm) {
-            register(formData);
+            register(user);
         }
     };
 

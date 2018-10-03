@@ -13,7 +13,6 @@ router.use(bodyParser.json());
 router.post('/register', (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
-    console.log(file);
     const user = new User({
         nickname: req.body.nickname,
         email: req.body.email,

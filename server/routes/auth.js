@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
             const token = jwt.sign({id: user._id}, config.secret, {
                 expiresIn: 86400 //24 hours
             });
-            res.status(200).send({token, user: {nickname: user.nickname, _id:user._id}});
+            res.status(200).send({token, user: {nickname: user.nickname, _id: user._id, image: user.image}});
         })
         .catch(() => res.status(500).send({message: 'Something wrong with registration.'}))
 });
@@ -39,7 +39,7 @@ router.post('/login', (req, res) => {
             const token = jwt.sign({id: user._id}, config.secret, {
                 expiresIn: 86400 // 24 hours
             });
-            res.status(200).send({token, user: {nickname: user.nickname, _id:user._id}});
+            res.status(200).send({token, user: {nickname: user.nickname, _id: user._id, image: user.image}});
         })
         .catch(() => res.status(500).send({message: 'Error on the server.'}))
 });
@@ -55,7 +55,7 @@ router.get('/check-token', (req, res) => {
     }
     console.log(req.userId);
     User.findById(req.userId)
-        .then((user) => res.status(200).send({ user: {nickname: user.nickname, _id:user._id}}));
+        .then((user) => res.status(200).send({ user: {nickname: user.nickname, _id: user._id, image: user.image}}));
 });
 
 module.exports = router;

@@ -2,7 +2,9 @@ import React from 'react';
 
 import ConversationsListContainer from "containers/ConversationsListContainer";
 import ChatContainer from "containers/ChatContainer";
+import AutocompleteContainer from "containers/AutocompleteContainer";
 import "./ChatPage.scss";
+
 
 const ChatPage = ({
     user
@@ -13,7 +15,10 @@ const ChatPage = ({
             <span className="user-info__nickname">{user.nickname}</span>
         </div>
         <div className="chat-box">
-            <div className="chat-box__conversations"><ConversationsListContainer/></div>
+            <div className="chat-box__conversations">
+                <AutocompleteContainer/>
+                <ConversationsListContainer/>
+            </div>
             <div className="chat-box__chat"><ChatContainer/></div>
         </div>
     </div>

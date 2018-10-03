@@ -28,11 +28,12 @@ router.get('/',checkAuth, (req, res) => {
                 return res.status(200).json({ conversations: fullConversations });
             }
             conversations.forEach((conversation) => {
-                let { title, _id, participants } = conversation;
+                let { title, _id, participants, image } = conversation;
                 if(!title) {
                     const indexOfUser = participants.map((user) => user._id.toString()).indexOf(userId.toString());
                     const companion = participants.filter((item, index) => index !== indexOfUser)[0];
-                    title = companion.nickname
+                    title = companion.nickname;
+                    image = companion.image;
                 }
                 Message.find({ conversationId: _id, available: userId} )
                     .populate({
@@ -40,7 +41,7 @@ router.get('/',checkAuth, (req, res) => {
                         select: 'nickname'
                     })
                     .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title, id: _id };
+                        fullConversations[_id] = {lastMessages: messages, title, id: _id, image };
                         if (Object.keys(fullConversations).length === conversations.length) {
                             return res.status(200).json({ conversations: fullConversations });
                         }
@@ -57,6 +58,7 @@ router.get('/',checkAuth, (req, res) => {
  * @param req.body.participants {Array} - Array of participants in conversation
  * @param req.body.title {String} - Conversation's title
  */
+
 router.post('/create', checkAuth, (req, res) => {
     const { participants, title } = req.body;
     const { userId } = req;
@@ -83,6 +85,7 @@ router.post('/create', checkAuth, (req, res) => {
  * @param req.userId {String} - User's id
  * @param req.params.companionId {String} - Companion's id
  */
+
 router.get('/conversationByCompanion/:companionId', checkAuth, (req, res) => {
     const { userId } = req;
     const { companionId } = req.params;

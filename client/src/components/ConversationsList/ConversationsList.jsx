@@ -1,19 +1,21 @@
 import React from 'react';
-import "./ConversationsList.css"
+import "./ConversationsList.scss"
 
 
 const ConversationsList = ({
 	conversations,
 	onClick,
 }) => (
-	<ul className="users-list">
+	<ul className="conversations-list">
 		{conversations.map(conversation => (
-			<li 
-				className="users-item"
+			<li
+				className="conversation"
 				key={conversation.id}
 				onClick={() => onClick(conversation.id)}
 			>
-				{conversation.title}
+				<img src={conversation.image || "https://otvet.imgsmail.ru/download/1448bb4efce8f11e7e5dd8578869146b_i-57.jpg"}
+					 className="conversation__image"/>
+				<span className="conversation__title">{conversation.title}</span>
 			</li>
 		))}
 	</ul>

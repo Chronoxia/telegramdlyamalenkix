@@ -5,6 +5,9 @@ const ConversationSchema = new Schema({
     title: {
         type: String,
     },
+    image: {
+        type: String,
+    },
     participants: [{ type: Schema.Types.ObjectId, ref: 'User'}],
 });
 

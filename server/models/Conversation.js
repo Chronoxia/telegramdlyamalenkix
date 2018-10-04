@@ -8,6 +8,7 @@ const ConversationSchema = new Schema({
     image: {
         type: String,
     },
+    author: { type: Schema.Types.ObjectId, ref: 'User'},
     participants: [{ type: Schema.Types.ObjectId, ref: 'User'}],
 });
 

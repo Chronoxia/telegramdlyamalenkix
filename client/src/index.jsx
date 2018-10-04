@@ -5,6 +5,8 @@ import configureStore from './store';
 import { checkAuth } from "actions/user";
 import './index.css';
 
+localStorage.clear();
+
 const store = configureStore();
 store.dispatch(checkAuth());
 

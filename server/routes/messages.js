@@ -1,14 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const User = require('../models/User');
 const Conversation = require('../models/Conversation');
 const Messages = require('../models/Message');
 const checkAuth = require('../middlewares/auth/checkAuth');
-
 const router = express.Router();
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
+
+const users = {}
 
 /**
  * route http://localhost:5000/messages/create'
@@ -19,24 +21,44 @@ router.use(bodyParser.json());
  */
 router.post('/create', checkAuth, (req, res) => {
     const { text, conversationId, authorId } = req.body;
+    req.io.emit('yay', 'yay');
     Conversation.findById(conversationId)
         .then((conversation) => {
+            console.log(1, conversation);
             if(!conversation) {
                 const { companionId } = req.body;
                 return Conversation.create({
                     participants: [authorId, companionId]
+                }).then(async conversation => {
+                    console.log(2, conversation)
+                    const users = require('../index').users;
+                    const keys = Object.keys(users);
+                    const author = await User.findById(authorId);
+                    const companion = await User.findById(companionId);
+
+                     keys.forEach(k => {
+                         if (conversation.participants.some(p => p.toString() === users[k] && users[k] === authorId)) {
+                             req.io.to(k).emit('CONVERSATION_RECEIVE', {id: conversation._id, lastMessages: [], title: companion.nickname, image: companion.image })
+                         }
+
+                         if (conversation.participants.some(p => p.toString() === users[k] && users[k] === companionId)) {
+                             req.io.to(k).emit('CONVERSATION_RECEIVE', {id: conversation._id, lastMessages: [], title: author.nickname, image: author.image })
+                         }
+                     });
+                     return conversation;
                 })
             }
             return conversation;
         })
-        .then((conversation) => (
-            Messages.create({
+        .then((conversation) => {
+            console.log(3, conversation);
+            return Messages.create({
                 conversationId: conversation._id,
                 author: authorId,
                 text,
                 available: conversation.participants,
             })
-        ))
+        })
         .then((message) => {
             return res.status(200).json(message)
         })

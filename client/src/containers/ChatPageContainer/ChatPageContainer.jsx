@@ -16,6 +16,9 @@ class ChatPageContainer extends PureComponent {
     }
 
     initSocket() {
+        socket.on('yay', (m) => {
+            console.log(m);
+        });
         const { user } = this.props;
         socket.emit('USER_CONNECTED', user);
         const { addMessageSuccess, addConversation } = this.props;

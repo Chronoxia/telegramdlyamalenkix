@@ -17,7 +17,10 @@ const handleToken = require('./middlewares/auth/handleToken');
 const corsOptions = {
     origin: ['http://localhost:4200', 'http://localhost:8080', 'http://localhost:8081']
 };
-
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 app.use(cors(corsOptions));
 app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -72,7 +75,7 @@ io.on('connection', socket => {
     });
     socket.on('USER_CONNECTED', (user) => {
         users[socket.id] = user._id;
-
+        console.log(users);
         User.findByIdAndUpdate(
             user._id,
             { online: true },
@@ -81,3 +84,7 @@ io.on('connection', socket => {
 });
 
 server.listen(port, () => console.log(`Server listening on port ${port}!`));
+
+module.exports = {
+    users,
+};

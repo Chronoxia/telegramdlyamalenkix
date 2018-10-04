@@ -17,7 +17,7 @@ router.use(bodyParser.json());
  * @param req.userId {String} - User's id
  */
 
-router.get('/',checkAuth, (req, res) => {
+router.get('/', checkAuth, (req, res) => {
     const { userId } = req;
     Conversation.find({participants: userId})
         .populate({
@@ -62,7 +62,7 @@ router.get('/',checkAuth, (req, res) => {
 
 router.post('/create', checkAuth, (req, res) => {
     const { participants, title, image } = req.body;
-    console.log(7, req.userId);
+    // console.log(7, req.userId);
     const { userId } = req;
     User.find({_id: {$in: participants}})
         .then((users) => Conversation.create({
@@ -93,8 +93,8 @@ router.post('/create', checkAuth, (req, res) => {
 router.get('/conversationByCompanion/:companionId', checkAuth, (req, res) => {
     const { userId } = req;
     const { companionId } = req.params;
-    Conversation.findOne({ participants: [userId, companionId]})
-        .then((conversation) =>{console.log(conversation); return res.status(200).json(conversation)})
+    Conversation.findOne({ participants: {$in: [[userId, companionId],[companionId, userId]]}})
+        .then((conversation) =>{console.log(666, conversation); return res.status(200).json(conversation)})
         .catch((err) => console.log(err));
 
 });

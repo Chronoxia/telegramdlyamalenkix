@@ -45,11 +45,10 @@ io.on('connection', socket => {
     console.log("User connected");
 
     socket.on('disconnect', () => {
-        console.log(users[socket.id]);
-        User.findByIdAndUpdate(
-            users[socket.id],
-            { online: false },
-            { upsert: true, new: true });
+        User.findOneAndUpdate(
+            { _id: users[socket.id] },
+            { $set: { online: false } },
+            { new: true }).then((user) => console.log(user));
         delete users[socket.id];
     });
     socket.on('MESSAGE_ADD', (message) => {
@@ -75,11 +74,10 @@ io.on('connection', socket => {
     });
     socket.on('USER_CONNECTED', (user) => {
         users[socket.id] = user._id;
-        console.log(users);
-        User.findByIdAndUpdate(
-            user._id,
-            { online: true },
-            { upsert: true, new: true });
+        User.findOneAndUpdate(
+            { _id: user._id },
+            { $set: { online: true } },
+            { new: true }).then((user) => console.log(user));
     })
 });
 

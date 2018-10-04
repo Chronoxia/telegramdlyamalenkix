@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    Col,
-} from "react-bootstrap";
 
 import MessageSendBoxContainer from "containers/MessageSendBoxContainer";
 import MessagesList from "components/MessagesList/MessagesList";
-import "./Chat.css";
+import "./Chat.scss";
 
 class Chat extends Component {
     state = {

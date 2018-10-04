@@ -1,5 +1,7 @@
+@import "sass/colors.scss";
+
 body {
-    background-color: #daf5d3;
+    background-color: $mint;
 }
 
 html, body, #root {

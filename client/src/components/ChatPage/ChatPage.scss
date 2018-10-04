@@ -1,3 +1,5 @@
+@import "sass/colors.scss";
+
 .chat-page {
     height: 100%;
     padding: 30px;
@@ -5,10 +7,14 @@
     flex-direction: column;
 
     .user-info {
-        background-color: #c4dfbd;
+        background-color: $dark-mint;
         border-radius: 10px;
         padding: 20px;
         position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
 
         &__image {
             position: absolute;
@@ -19,9 +25,8 @@
         }
 
         &__nickname {
-            margin-left: 10%;
-            color: white;
-            font-size: 22px;
+            margin-left: 13%;
+            font-size: 28px;
             font-weight: 600;
         }
     }

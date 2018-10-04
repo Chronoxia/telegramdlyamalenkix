@@ -1,3 +1,5 @@
+@import "sass/colors.scss";
+
 .conversations-list {
     background-color: white;
     border-radius: 10px;
@@ -9,12 +11,12 @@
 
     .conversation {
         padding: 10px 30px;
-        border-bottom: 1px solid #ddffe5;
+        border-bottom: 1px solid $mint;
 
 
         &:hover {
             cursor: pointer;
-            background-color: #f6f8f6;
+            background-color: $light-mint;
         }
 
         &__image {
@@ -24,7 +26,7 @@
         }
 
         &__title {
-            color: #628f5e;
+            color: $dark-green;
             margin-left: 10px;
             font-size: 16px;
             font-weight: 600;

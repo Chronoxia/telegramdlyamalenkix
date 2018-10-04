@@ -3,9 +3,7 @@ import { render } from 'react-dom';
 import Root from "components/Root";
 import configureStore from './store';
 import { checkAuth } from "actions/user";
-import './index.css';
-
-localStorage.clear();
+import './index.scss';
 
 const store = configureStore();
 store.dispatch(checkAuth());

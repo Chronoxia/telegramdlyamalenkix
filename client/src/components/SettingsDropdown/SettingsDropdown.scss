@@ -1,0 +1,39 @@
+@import "sass/colors.scss";
+
+.settings-dropdown {
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-green;
+    }
+  }
+
+  &__options {
+    position: absolute;
+    right: 50px;
+    top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid $dark-green;
+    color: $dark-green;
+    list-style: none;
+    font-size: 18px;
+    padding: 0;
+  }
+
+  &__item {
+    padding: 10px 20px;
+
+    &:hover {
+      background-color: $light-mint;
+      cursor: pointer;
+    }
+  }
+}

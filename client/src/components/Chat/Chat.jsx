@@ -23,6 +23,12 @@ class Chat extends Component {
 
     };
 
+    getStatusProperty() {
+        const { conversation, userId } = this.props;
+        const companion = conversation.participants.filter(item => item._id !== userId)[0];
+        return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
+    }
+
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
@@ -31,6 +37,7 @@ class Chat extends Component {
                 <div className="chat-info">
                     <img className="chat-info__image" src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}/>
                     <span className="chat-info__title" >{conversation.title}</span>
+                    {!conversation.author && <span className="chat-info__status">{this.getStatusProperty()}</span>}
                 </div>
 
                 <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>

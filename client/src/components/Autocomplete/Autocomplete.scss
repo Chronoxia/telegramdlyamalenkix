@@ -17,6 +17,10 @@
 
     &__user {
         padding: 10px;
+        &:hover {
+            cursor: pointer;
+            background-color: $light-mint;
+        }
     }
 
     &__user-nickname {

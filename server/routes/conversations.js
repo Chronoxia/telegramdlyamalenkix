@@ -73,10 +73,11 @@ router.post('/create', checkAuth, (req, res) => {
         .then(c => Message.find({ conversationId: c._id, available: userId}).then(messages => {
             return {
                 title: c.title,
-                id: c._id,
+                _id: c._id,
                 image: c.image,
                 participants: c.participants,
-                messages: messages
+                messages: messages,
+                author: c.author,
             }
         }))
         .then((conversation) => res.status(200).json(conversation))

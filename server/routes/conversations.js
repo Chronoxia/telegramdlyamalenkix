@@ -11,9 +11,11 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 
-router.get('/privates', checkAuth, (req, res) => {
+
+
+router.get('/', checkAuth, (req, res) => {
     const { userId } = req;
-    Conversation.find({participants: userId, author: { $exists: false}})
+    Conversation.find({participants: userId})
         .populate({
             path: 'participants',
         })
@@ -23,12 +25,15 @@ router.get('/privates', checkAuth, (req, res) => {
                 return res.status(200).json({ conversations: fullConversations });
             }
             conversations.forEach((conversation) => {
-                const {_id, participants} = conversation;
-                const indexOfUser = participants.map((user) => user._id.toString()).indexOf(userId.toString());
-                const companion = participants.filter((item, index) => index !== indexOfUser)[0];
-                const title = companion.nickname;
-                const image = companion.image;
-                const online = companion.online;
+                const {_id, participants, author } = conversation;
+                let { title, image, online } = conversation;
+                if (!author) {
+                    const indexOfUser = participants.map((user) => user._id.toString()).indexOf(userId.toString());
+                    const companion = participants.filter((item, index) => index !== indexOfUser)[0];
+                    title = companion.nickname;
+                    image = companion.image;
+                    online = companion.online;
+                }
 
                 Message.find({ conversationId: _id, available: userId} )
                     .populate({
@@ -36,36 +41,7 @@ router.get('/privates', checkAuth, (req, res) => {
                         select: 'nickname'
                     })
                     .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title, id: _id, image, online };
-                        if (Object.keys(fullConversations).length === conversations.length) {
-                            return res.status(200).json({ conversations: fullConversations });
-                        }
-                    })
-            });
-        })
-        .catch((err) => console.log(err))
-});
-
-router.get('/groups', checkAuth, (req, res) => {
-    const { userId } = req;
-    Conversation.find({participants: userId,  author: { $exists: true}})
-        .populate({
-            path: 'participants',
-        })
-        .then((conversations) => {
-            const fullConversations = {};
-            if (!conversations.length) {
-                return res.status(200).json({ conversations: fullConversations });
-            }
-            conversations.forEach((conversation) => {
-                let { title, _id, participants, image } = conversation;
-                Message.find({ conversationId: _id, available: userId} )
-                    .populate({
-                        path: 'user',
-                        select: 'nickname'
-                    })
-                    .then((messages) => {
-                        fullConversations[_id] = {lastMessages: messages, title, id: _id, image, participants };
+                        fullConversations[_id] = { _id, messages, title, author, image, participants, online };
                         if (Object.keys(fullConversations).length === conversations.length) {
                             return res.status(200).json({ conversations: fullConversations });
                         }

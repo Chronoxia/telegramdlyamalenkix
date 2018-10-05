@@ -29,7 +29,7 @@ export const getConversations = () => (dispatch) => {
 	const token = localStorage.getItem('token');
 	dispatch(requestConversations());
 
-	return fetch(`http://localhost:5000/conversations/privates`, {
+	return fetch(`http://localhost:5000/conversations`, {
 		method: 'get',
 		headers: {
 			'access-token': token,

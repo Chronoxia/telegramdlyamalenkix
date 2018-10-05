@@ -10,7 +10,7 @@ import {
 class ConversationsListContainer extends PureComponent {
     componentDidMount() {
         this.props.conversations.forEach(conversation => {
-            socket.emit('USER_JOIN', conversation.id)
+            socket.emit('USER_JOIN', conversation._id)
         })
     }
 

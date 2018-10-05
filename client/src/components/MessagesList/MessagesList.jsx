@@ -9,7 +9,7 @@ const MessagesList = ({
     messages
 }) => (
     <div className="messages">
-        {conversation.lastMessages.map((message) =>  (
+        {conversation.messages.map((message) =>  (
                 <Message key={message._id}
                          text={message.text}
                          id={message._id}

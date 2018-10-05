@@ -36,11 +36,11 @@ router.post('/create', checkAuth, (req, res) => {
 
                      keys.forEach(k => {
                          if (conversation.participants.some(p => p.toString() === users[k] && users[k] === authorId)) {
-                             req.io.to(k).emit('CONVERSATION_RECEIVE', {id: conversation._id, lastMessages: [], title: companion.nickname, image: companion.image })
+                             req.io.to(k).emit('CONVERSATION_RECEIVE', {_id: conversation._id, messages: [], title: companion.nickname, image: companion.image })
                          }
 
                          if (conversation.participants.some(p => p.toString() === users[k] && users[k] === companionId)) {
-                             req.io.to(k).emit('CONVERSATION_RECEIVE', {id: conversation._id, lastMessages: [], title: author.nickname, image: author.image })
+                             req.io.to(k).emit('CONVERSATION_RECEIVE', {_id: conversation._id, messages: [], title: author.nickname, image: author.image })
                          }
                      });
                      return conversation;
@@ -49,7 +49,7 @@ router.post('/create', checkAuth, (req, res) => {
             return conversation;
         })
         .then((conversation) => {
-            console.log(3, conversation);
+            console.log(3, conversation._id);
             return Messages.create({
                 conversationId: conversation._id,
                 author: authorId,

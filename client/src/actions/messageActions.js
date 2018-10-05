@@ -25,3 +25,4 @@ export const deleteMessage = (id) => (dispatch) => {
     .then(data => dispatch(deleteMessageSuccess(data)))
     .catch(err => dispatch(deleteMessageFailure(err)))
 };
+

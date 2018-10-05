@@ -27,7 +27,7 @@ class ChatPageContainer extends PureComponent {
         });
         socket.on('CONVERSATION_RECEIVE', (conversation) => {
             addConversation(conversation);
-            socket.emit('USER_JOIN', conversation.id)
+            socket.emit('USER_JOIN', conversation._id)
         })
     }
 

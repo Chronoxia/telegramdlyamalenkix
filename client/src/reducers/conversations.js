@@ -42,7 +42,7 @@ const conversations = (state = initialState, action) => {
           ...state.conversations,
           [action.payload.message.conversationId]: {
             ...state.conversations[action.payload.message.conversationId],
-            lastMessages: state.conversations[action.payload.message.conversationId].lastMessages.concat(action.payload.message)
+            messages: state.conversations[action.payload.message.conversationId].messages.concat(action.payload.message)
           }
         }
       };

@@ -26,16 +26,16 @@ class Chat extends Component {
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
-            <div className={conversation.id || chosenUser ? "messages-list" : "not-selected-conversation"}>
+            <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
                 <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
-                {(conversation.id || chosenUser) && <MessageSendBoxContainer/>}
+                {(conversation._id || chosenUser) && <MessageSendBoxContainer/>}
             </div>
         )
     }
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    conversation: state.conversations.conversations[ownProps.conversation] || {id: null, lastMessages: []},
+    conversation: state.conversations.conversations[ownProps.conversation] || {_id: null, messages: []},
     userId: state.user.user._id,
     chosenUser: state.users.chosenUser
 });

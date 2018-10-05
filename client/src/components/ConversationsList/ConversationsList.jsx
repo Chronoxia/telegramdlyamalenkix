@@ -10,8 +10,8 @@ const ConversationsList = ({
 		{conversations.map(conversation => (
 			<li
 				className="conversation"
-				key={conversation.id}
-				onClick={() => onClick(conversation.id)}
+				key={conversation._id}
+				onClick={() => onClick(conversation._id)}
 			>
 				<img src={conversation.image || "https://otvet.imgsmail.ru/download/1448bb4efce8f11e7e5dd8578869146b_i-57.jpg"}
 					 className="conversation__image"/>

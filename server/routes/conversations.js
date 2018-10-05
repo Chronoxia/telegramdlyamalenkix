@@ -76,7 +76,7 @@ router.post('/create', checkAuth, (req, res) => {
                 id: c._id,
                 image: c.image,
                 participants: c.participants,
-                lastMessages: messages
+                messages: messages
             }
         }))
         .then((conversation) => res.status(200).json(conversation))

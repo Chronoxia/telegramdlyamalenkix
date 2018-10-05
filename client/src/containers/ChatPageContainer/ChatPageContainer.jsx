@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from "react-redux";
 
+import { loadUsers } from 'actions/users';
 import socket from "../../socket";
 import { 
     getConversations, 
@@ -12,6 +13,7 @@ import ChatPage from "components/ChatPage";
 class ChatPageContainer extends PureComponent {
     componentDidMount() {
         this.props.getConversations();
+        this.props.getUsers();
         this.initSocket();
     }
 
@@ -54,6 +56,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     getConversations: () => dispatch(getConversations()),
     addMessageSuccess: (message) => dispatch(addMessageSuccess(message)),
     addConversation: (conversation) => dispatch(createConversationSuccess(conversation)),
+    getUsers: () => dispatch(loadUsers()),
 });
 
 export default connect(

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
+import { loadUsers } from 'actions/users';
 import Modal from '../Modal';
 import Chat from "components/Chat";
 

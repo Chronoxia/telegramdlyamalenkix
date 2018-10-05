@@ -8,8 +8,8 @@ import AutocompleteContainer from "containers/AutocompleteContainer";
 
 class UsersListContainer extends PureComponent {
     componentDidMount() {
-        const { loadUsers } = this.props;
-        loadUsers();
+        // const { loadUsers } = this.props;
+        // loadUsers();
     }
 
     chooseUser = (selectedUserId) => {

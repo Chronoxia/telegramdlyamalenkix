@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 
 router.get('/privates', checkAuth, (req, res) => {
     const { userId } = req;
-    Conversation.find({participants: userId})
+    Conversation.find({participants: userId, author: { $exists: false}})
         .populate({
             path: 'participants',
         })
@@ -92,7 +92,7 @@ router.post('/create', checkAuth, (req, res) => {
             participants: users.map((user) => user._id),
             title,
             image,
-            author
+            author: userId,
         }))
         .then(c => Message.find({ conversationId: c._id, available: userId}).then(messages => {
             return {
@@ -117,8 +117,8 @@ router.post('/create', checkAuth, (req, res) => {
 router.get('/conversationByCompanion/:companionId', checkAuth, (req, res) => {
     const { userId } = req;
     const { companionId } = req.params;
-    Conversation.findOne({ participants: {$in: [[userId, companionId],[companionId, userId]]}})
-        .then((conversation) =>{console.log(666, conversation); return res.status(200).json(conversation)})
+    Conversation.findOne({ participants: {$in: [[userId, companionId],[companionId, userId]]}, author: { $exists: false}})
+        .then((conversation) => res.status(200).json(conversation))
         .catch((err) => console.log(err));
 
 });

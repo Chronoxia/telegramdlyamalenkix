@@ -24,13 +24,11 @@ router.post('/create', checkAuth, (req, res) => {
     req.io.emit('yay', 'yay');
     Conversation.findById(conversationId)
         .then((conversation) => {
-            console.log(1, conversation);
             if(!conversation) {
                 const { companionId } = req.body;
                 return Conversation.create({
                     participants: [authorId, companionId]
                 }).then(async conversation => {
-                    console.log(2, conversation)
                     const users = require('../index').users;
                     const keys = Object.keys(users);
                     const author = await User.findById(authorId);

@@ -78,7 +78,7 @@ export default handleActions({
     },
     [deleteMessageSuccess]: (state, action) => {
         const copy = JSON.parse(JSON.stringify(state));
-        copy.conversations[action.payload.conversationId].lastMessages = copy.conversations[action.payload.conversationId].lastMessages.filter(m => m._id !== action.payload._id);
+        copy.conversations[action.payload.conversationId].messages = copy.conversations[action.payload.conversationId].messages.filter(m => m._id !== action.payload._id);
         return copy;
     },
 }, initialState)

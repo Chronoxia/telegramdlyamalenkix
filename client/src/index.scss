@@ -8,6 +8,10 @@ html, body, #root {
     height: 100%
 }
 
+p, ul {
+    margin: 0;
+    padding: 0;
+}
 .modal {
     position: fixed;
     top: 0;

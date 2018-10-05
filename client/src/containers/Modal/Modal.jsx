@@ -13,7 +13,7 @@ class Modal extends Component {
   };
 
   componentDidMount() {
-    // this.props.getUsers()
+     // this.props.getUsers()
   }
 
   renderTitle() {

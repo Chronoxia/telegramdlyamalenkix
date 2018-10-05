@@ -26,7 +26,7 @@
 
         &__nickname {
             margin-left: 13%;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 600;
         }
     }
@@ -37,10 +37,27 @@
         height: 100%;
         padding-top: 30px;
 
+        &__new {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: gray;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            border: 4px solid white;
+            position: absolute;
+            top: 40px;
+            left: -20px
+        }
         &__conversations {
             width: 30%;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         &__chat {

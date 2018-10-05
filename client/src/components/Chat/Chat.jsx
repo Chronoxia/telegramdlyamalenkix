@@ -26,9 +26,19 @@ class Chat extends Component {
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
-            <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
-                <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
-                {(conversation._id || chosenUser) && <MessageSendBoxContainer/>}
+            <div className="chat">
+
+                <div className="chat-info">
+                    <img className="chat-info__image" src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}/>
+                    <span className="chat-info__title" >{conversation.title}</span>
+                </div>
+
+                <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
+                    <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
+
+                    {(conversation._id || chosenUser) && <MessageSendBoxContainer/>}
+                </div>
+
             </div>
         )
     }

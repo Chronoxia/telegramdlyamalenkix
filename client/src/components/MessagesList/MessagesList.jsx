@@ -7,13 +7,12 @@ const MessagesList = ({
     userId,
     handleToggle,
     messages
+
 }) => (
     <div className="messages">
         {conversation.messages.map((message) =>  (
                 <Message key={message._id}
-                         text={message.text}
-                         id={message._id}
-                         author={message.author}
+                         message={message}
                          userId={userId}
                          messages={messages}
                          handleToggle={handleToggle}/>

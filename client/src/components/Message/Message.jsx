@@ -3,7 +3,7 @@ import Remarkable from 'remarkable';
 import { connect } from 'react-redux';
 
 import { deleteMessage } from 'actions/message';
-import "./Message.css";
+import "./Message.scss";
 
 class Message extends PureComponent {
 
@@ -14,27 +14,28 @@ class Message extends PureComponent {
     }
 
     handleClick = () => {
-        const { id, deleteMessage } = this.props;
-        deleteMessage(id);
+        const { message, deleteMessage } = this.props;
+        deleteMessage(message._id);
     };
 
     handleToggle = () => {
-        this.props.handleToggle(this.props.id);
+        this.props.handleToggle(this.props.message._id);
     };
 
     render() {
-        const { text, author, userId, id } = this.props;
-        const check = this.props.messages.some(m => m === id)
+        const { message, userId } = this.props;
+        const check = this.props.messages.some(m => m === message._id);
         return (
-            <div className={ author === userId ? "client-message" : "message" } 
+            <div className={ message.author === userId ? "message--client" : "message" }
                 style={{ border: check ? '1px solid lightblue' : 'none' }} onClick={ this.handleToggle }>
                 <span
-                    style={{ cursor: 'pointer' }}
-                    onClick={ this.handleClick }
+                   className="message__delete-btn"
+                   onClick={ this.handleClick }
                 >
                     x
                 </span>
-                 <div dangerouslySetInnerHTML={this.getRawMarkup(text)} />
+                <div dangerouslySetInnerHTML={this.getRawMarkup(message.text)} />
+                <span className="message__time">{new Date(message.createdAt).toLocaleString()}</span>
             </div>
         )
     }

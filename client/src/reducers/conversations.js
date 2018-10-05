@@ -56,7 +56,7 @@ const conversations = (state = initialState, action) => {
            ...state,
            conversations: {
              ...state.conversations,
-             [action.payload.conversation.id]: {
+             [action.payload.conversation._id]: {
                ...action.payload.conversation,
              }
            }

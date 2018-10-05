@@ -23,10 +23,13 @@
             border-radius: 50%;
             height: 70px;
             width: 70px;
-            border: 6px solid #0bccc9;
 
             &--online {
+                border: 6px solid green;
+            }
 
+            &--offline {
+                border: 6px solid grey;
             }
         }
 
@@ -38,4 +41,3 @@
         }
     }
 }
-

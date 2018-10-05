@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { loadUsers } from 'actions/users';
 import socket from "../../socket";
 import { 
-    getConversations, 
-    addMessageSuccess, 
+    getConversations,
     createConversationSuccess, 
-} from '../../actions/conversation';
+} from 'actions/conversation';
+import { addMessageSuccess } from "actions/message";
 import ChatPage from "components/ChatPage";
 
 class ChatPageContainer extends PureComponent {

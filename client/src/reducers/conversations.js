@@ -1,4 +1,14 @@
+import {handleActions} from "redux-actions";
+
 import { chooseUser } from 'actions/users';
+import {
+    changeConversation,
+    createConversationSuccess,
+    getConversationsFailure,
+    getConversationsSuccess,
+    requestConversations
+} from "../actions/conversation";
+import {addMessageSuccess, deleteMessageSuccess} from "../actions/message";
 
 const initialState = {
   conversations: {},
@@ -7,67 +17,72 @@ const initialState = {
   error: null
 };
 
-const conversations = (state = initialState, action) => {
-  const copy = JSON.parse(JSON.stringify(state));
-  switch (action.type) {
-    case 'REQUEST_CONVERSATIONS': 
-      return {
-        ...state,
-        isFetching: true,
-        error: null,
-      };
-    case 'GET_CONVERSATIONS_SUCCESS': 
-      return {
-        ...state,
-        isFetching: false,
-        conversations: {
-          ...action.payload.conversations
-        }
-      };
-    case 'GET_CONVERSATIONS_FAILURE': 
-      return {
-        ...state,
-        isFetching: false,
-        error: action.payload.error
-      };
-    case 'CHANGE_CONVERSATION':
-      return {
-        ...state,
-        activeConversation: action.payload.id
-      };
-    case 'ADD_MESSAGE_SUCCESS': 
-      return {
-        ...state,
-        conversations: {
-          ...state.conversations,
-          [action.payload.message.conversationId]: {
-            ...state.conversations[action.payload.message.conversationId],
-            messages: state.conversations[action.payload.message.conversationId].messages.concat(action.payload.message)
-          }
-        }
-      };
-      case '[Users] New user was chosen':
+export default handleActions({
+    [requestConversations]: (state, action) => {
         return {
-          ...state,
-          activeConversation: null,
+            ...state,
+            isFetching: true,
+            error: null,
+        }
+    },
+    [getConversationsSuccess]: (state, action) => {
+        return {
+            ...state,
+            isFetching: false,
+            conversations: {
+                ...action.payload.conversations
+            }
+        }
+    },
+    [getConversationsFailure]: (state, action) => {
+        return {
+            ...state,
+            isFetching: false,
+            error: action.payload.error
+        }
+    },
+    [changeConversation]: (state, action) => {
+        return {
+            ...state,
+            activeConversation: action.payload
+        }
+    },
+    [addMessageSuccess]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.conversationId]: {
+                    ...state.conversations[action.payload.conversationId],
+                    messages: state.conversations[action.payload.conversationId].messages.concat(action.payload)
+                }
+            }
+        }
+    },
+    [chooseUser]: (state, action) => {
+        return {
+            ...state,
+            activeConversation: null,
         };
-      case 'CREATE_CONVERSATION_SUCCESS':
-         return {
-           ...state,
-           conversations: {
-             ...state.conversations,
-             [action.payload.conversation._id]: {
-               ...action.payload.conversation,
-             }
-           }
-         };
-      case 'DELETE_MESSAGE_SUCCESS':
+    },
+    [createConversationSuccess]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.conversation._id]: {
+                    ...action.payload.conversation,
+                }
+            }
+        };
+    },
+    [deleteMessageSuccess]: (state, action) => {
+        const copy = JSON.parse(JSON.stringify(state));
         copy.conversations[action.payload.conversationId].lastMessages = copy.conversations[action.payload.conversationId].lastMessages.filter(m => m._id !== action.payload._id);
-        return copy;  
-    default:
-      return state;
-  }
-};
+        return copy;
+    },
+}, initialState)
+
 
 export const getConversationsById = (state) => {
   return Object.keys(state.conversations.conversations);
@@ -77,4 +92,3 @@ export const getAllConversations = (state) => {
   return getConversationsById(state).map(id => state.conversations.conversations[id])
 };
 
-export default conversations;

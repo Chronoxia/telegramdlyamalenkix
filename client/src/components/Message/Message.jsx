@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Remarkable from 'remarkable';
 import { connect } from 'react-redux';
 
-import { deleteMessage } from 'actions/messageActions';
+import { deleteMessage } from 'actions/message';
 import "./Message.css";
 
 class Message extends PureComponent {

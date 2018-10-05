@@ -66,6 +66,8 @@ export const checkAuth = () => (dispatch) => {
         })
 };
 
+export const logout = createAction('[User] logout');
+
 export const registerRequest = createAction('[User] Register request');
 export const registerSuccess = createAction('[User] Register success');
 export const registerFailed = createAction('[User] Register failed');

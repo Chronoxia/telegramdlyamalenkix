@@ -1,7 +1,9 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
+import { logout } from 'actions/user';
 import "./SettingsDropdown.scss";
 
-class SettingsDropdown extends PureComponent {
+export class SettingsDropdown extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -12,11 +14,15 @@ class SettingsDropdown extends PureComponent {
 
     toggleModal = () => {
         const { isOpen } = this.state;
-        this.setState({
-            isOpen: !isOpen,
-        });
+        this.setState((state, props) => ({
+            isOpen: !state.isOpen,
+        }));
     };
 
+    handleClick = (e) => {
+        localStorage.clear();
+        this.props.logout();
+    };
 
     render() {
         const { isOpen } = this.state;
@@ -28,11 +34,16 @@ class SettingsDropdown extends PureComponent {
                 { isOpen &&
                     <ul className="settings-dropdown__options">
                         <li className="settings-dropdown__item">Settings</li>
-                        <li className="settings-dropdown__item">LogOut</li>
+                        <li className="settings-dropdown__item" onClick={ this.handleClick }>LogOut</li>
                     </ul>
                 }
             </div>
         )
     }
 }
-export default SettingsDropdown;
+
+const mapDispatchToProps = (dispatch) => ({
+    logout: () => dispatch(logout()),
+});
+
+export default connect(null, mapDispatchToProps)(SettingsDropdown);

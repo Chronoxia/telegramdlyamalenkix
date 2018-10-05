@@ -1,13 +1,11 @@
-import { combineReducers } from 'redux';
-import userReducer from './user';
-import usersReducer from './users';
-import conversations from './conversations';
-import searchedUsers from './searchedUsers';
+import appReducer from './appReducer';
 
+const rootReducer = (state, action) => {
+    if (action.type === '[User] logout') {
+        state = undefined;
+    }
 
-export default combineReducers({
-    user: userReducer,
-    users: usersReducer,
-    conversations,
-    searchedUsers
-})
+    return appReducer(state, action);
+};
+
+export default rootReducer;

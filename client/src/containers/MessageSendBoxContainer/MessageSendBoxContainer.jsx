@@ -20,7 +20,7 @@ class MessageSendBoxContainer extends PureComponent {
         this.setState((state) => ({
             message: {
                 ...state.message,
-                isOpen: !state.isOpen,
+                isOpen: !state.message.isOpen,
             }
         }))
     }

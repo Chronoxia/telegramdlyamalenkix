@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-    FormGroup,
-    FormControl,
-    Button
-} from "react-bootstrap";
 
-import { Picker, Emoji } from 'emoji-mart';
+import {Picker, Emoji} from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css'
-import "./MessageSendBox.css";
+import "./MessageSendBox.scss";
 
 const MessageSendBox = ({
     message,
@@ -18,29 +13,30 @@ const MessageSendBox = ({
     isOpen,
     addEmoji,
 }) => (
-    <div className="message-sent-box">
-            { isOpen && 
-                <Picker 
-                    emojiSize={24}
-                    style={{ position: 'absolute' }}
-                    onSelect={ addEmoji }
-                    sheetSize={16}
-                />
+    <div className="message-send-box">
+        <div className="message-send-box__input-box">
+            <input
+                type="text"
+                name="text"
+                className="message-send-box__input"
+                value={message.text}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}/>
+            <Emoji
+                emoji={{id: 'rage'}}
+                size={24}
+                onClick={handleClick}
+            />
+            {isOpen &&
+            <Picker
+                emojiSize={24}
+                style={{position: 'absolute', right: '0', bottom: '50px', 'overflowY': 'hidden', 'zIndex': '10'}}
+                onSelect={addEmoji}
+            />
             }
-            <FormGroup className="message-sent-box-group">
-                <FormControl 
-                    type="text" 
-                    name="text" 
-                    value={message.text} 
-                    onChange={handleChange} 
-                    onKeyDown={handleKeyDown}/>
-                <Emoji 
-                    emoji={{ id: 'rage'}}
-                    size={24}
-                    onClick={ handleClick }
-                />
-                <Button onClick={sendMessage} className="sent-btn">Send</Button>
-            </FormGroup>
+        </div>
+
+        <button onClick={sendMessage} className="message-send-box__btn">Send</button>
     </div>
 );
 export default MessageSendBox;

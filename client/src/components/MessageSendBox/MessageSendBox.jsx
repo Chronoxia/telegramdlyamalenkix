@@ -23,7 +23,7 @@ const MessageSendBox = ({
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}/>
             <Emoji
-                emoji={{id: 'rage'}}
+                emoji={{id: 'face_with_raised_eyebrow'}}
                 size={24}
                 onClick={handleClick}
             />

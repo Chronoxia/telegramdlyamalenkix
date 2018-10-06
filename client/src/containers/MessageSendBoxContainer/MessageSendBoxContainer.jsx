@@ -52,12 +52,10 @@ class MessageSendBoxContainer extends PureComponent {
     };
 
     addEmoji = (emoji) => {
-        const smile = new EmojiConvertor();
-        const output = smile.replace_colons(emoji.colons);
         this.setState({
             message: {
                 ...this.state.message,
-                text: this.state.message.text + output,
+                text: this.state.message.text + emoji.colons,
             }
         })
     }

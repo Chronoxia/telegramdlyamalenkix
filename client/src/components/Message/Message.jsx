@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react';
-import Remarkable from 'remarkable';
 import { connect } from 'react-redux';
+
+import ReactDOMServer from 'react-dom/server';
+import { Emoji as EmojiMartEmoji } from 'emoji-mart';
+import MarkdownIt from 'markdown-it';
+import emoji from 'markdown-it-emoji';
 
 import { deleteMessage } from 'actions/message';
 import "./Message.scss";
@@ -8,9 +12,18 @@ import "./Message.scss";
 class Message extends PureComponent {
 
     getRawMarkup(text) {
-        const md = new Remarkable();
-        const markdown = md.render(text);
-        return { __html: markdown }
+        const md = MarkdownIt({
+            html: true,
+            linkify: true,
+            typographer: true,
+            breaks: false,
+        }).use(emoji);
+
+        md.renderer.rules.emoji = (tokens, idx) =>
+            ReactDOMServer.renderToStaticMarkup(<EmojiMartEmoji emoji={tokens[idx].markup} size={25} />);
+
+        const rawMarkup = md.render(text);
+        return {__html : rawMarkup};
     }
 
     handleClick = (e) => {

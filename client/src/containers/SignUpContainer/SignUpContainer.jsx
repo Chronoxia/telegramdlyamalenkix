@@ -54,7 +54,7 @@ class SignUpContainer extends PureComponent {
         this.setState({ submitted: true });
         const { user } = this.state;
         const { register } = this.props;
-        if (user.nickname && user.email && user.password && user.passwordConfirm) {
+        if (user.nickname && user.email && user.password && user.password === user.passwordConfirm) {
             register(user);
         }
     };

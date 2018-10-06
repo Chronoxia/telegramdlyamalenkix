@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { deleteConversation } from 'actions/conversation';
 import MessageSendBoxContainer from "containers/MessageSendBoxContainer";
 import MessagesList from "components/MessagesList/MessagesList";
 import "./Chat.scss";
@@ -30,16 +30,26 @@ class Chat extends Component {
         return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
     }
 
+    handleClick = (e) => {
+        e.preventDefault();
+        const { deleteConversation, conversation } = this.props;
+        deleteConversation(conversation._id);
+    }
+
     render() {
-        console.log(this.props);
         const { conversation, userId, chosenUser } = this.props;
         return (
             <div className="chat">
-
                 <div className="chat-info">
                     <img className="chat-info__image" src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}/>
                     <span className="chat-info__title" >{conversation.title}</span>
                     {!conversation.author && <span className="chat-info__status">{this.getStatusProperty()}</span>}
+                    <span
+                        onClick={ this.handleClick }
+                        style={{ cursor: 'pointer' }}
+                    >
+                        x
+                    </span>
                 </div>
 
                 <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
@@ -56,7 +66,14 @@ class Chat extends Component {
 const mapStateToProps = (state, ownProps) => ({
     conversation: state.conversations.conversations[ownProps.conversation] || {_id: null, messages: []},
     userId: state.user.user._id,
-    chosenUser: state.users.chosenUser
+    chosenUser: state.users.chosenUser,
 });
 
-export default connect(mapStateToProps)(Chat);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    deleteConversation: (id) => dispatch(deleteConversation(id))
+})
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(Chat);

@@ -125,9 +125,11 @@ router.put('/removeAllMessages', checkAuth, (req, res) => {
     Messages.updateMany(
         { conversationId },
         { $pull: { available: userId } },
+        { new: true }
     )
         .then((messages) => {
-            return res.status(200).json(messages)
+            console.log('>>>>>>', messages);
+            return res.status(200).send({ id: conversationId})
         })
 });
 

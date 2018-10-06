@@ -6,7 +6,8 @@ import {
     createConversationSuccess,
     getConversationsFailure,
     getConversationsSuccess,
-    requestConversations
+    requestConversations,
+    deleteConversationSuccess
 } from "../actions/conversation";
 import { addMessageSuccess, deleteMessageSuccess } from "../actions/message";
 
@@ -80,6 +81,18 @@ export default handleActions({
         const copy = JSON.parse(JSON.stringify(state));
         copy.conversations[action.payload.conversationId].messages = copy.conversations[action.payload.conversationId].messages.filter(m => m._id !== action.payload._id);
         return copy;
+    },
+    [deleteConversationSuccess]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.id]: {
+                    ...state.conversations[action.payload.id],
+                    messages: []
+                }
+            }
+        }
     },
 }, initialState)
 

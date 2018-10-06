@@ -1,3 +1,4 @@
+import { handleError } from '../utils';
 import  { createAction } from 'redux-actions';
 import { chooseUser } from 'actions/users';
 import socket from '../socket';
@@ -74,3 +75,23 @@ export const changeConversation = createAction('[Conversation] change conversati
 
 export const checkConversationStarted = createAction('[Conversation] Check started');
 export const checkConversationFailed = createAction('[Conversation] Check failed');
+
+export const deleteConversationRequest = createAction('[Conversation] delete request');
+export const deleteConversationSuccess = createAction('[Conversation] delete success');
+export const deleteConversationFailure = createAction('[Conversation] delete failure');
+
+export const deleteConversation = (id) => (dispatch) => {
+	const token = localStorage.getItem('token');
+	dispatch(deleteConversationRequest());
+
+	return fetch('http://localhost:5000/messages/removeAllMessages', {
+		method: 'put',
+		body: JSON.stringify({ conversationId: id }),
+		headers: {
+			'access-token': token,
+			'Content-Type': 'application/json',
+		}})
+		.then(res => res.json())
+		.then(data => dispatch(deleteConversationSuccess(data)))
+		.catch(err => dispatch(deleteConversationFailure(err)))
+}

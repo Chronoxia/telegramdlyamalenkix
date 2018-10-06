@@ -13,7 +13,8 @@ class Message extends PureComponent {
         return { __html: markdown }
     }
 
-    handleClick = () => {
+    handleClick = (e) => {
+        e.stopPropagation();
         const { message, deleteMessage } = this.props;
         deleteMessage(message._id);
     };

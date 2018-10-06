@@ -8,7 +8,7 @@ import {
     getConversationsSuccess,
     requestConversations
 } from "../actions/conversation";
-import {addMessageSuccess, deleteMessageSuccess} from "../actions/message";
+import { addMessageSuccess, deleteMessageSuccess } from "../actions/message";
 
 const initialState = {
   conversations: {},
@@ -70,8 +70,8 @@ export default handleActions({
             ...state,
             conversations: {
                 ...state.conversations,
-                [action.payload.conversation._id]: {
-                    ...action.payload.conversation,
+                [action.payload._id]: {
+                    ...action.payload,
                 }
             }
         };

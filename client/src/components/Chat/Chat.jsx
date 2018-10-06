@@ -25,11 +25,13 @@ class Chat extends Component {
 
     getStatusProperty() {
         const { conversation, userId } = this.props;
+        if (!conversation.participants) return;
         const companion = conversation.participants.filter(item => item._id !== userId)[0];
         return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
     }
 
     render() {
+        console.log(this.props);
         const { conversation, userId, chosenUser } = this.props;
         return (
             <div className="chat">

@@ -11,8 +11,18 @@ class MessageSendBoxContainer extends PureComponent {
         this.state = {
             message: {
                 text: '',
+                isOpen: false,
             }
         };
+    }
+
+    handleClick = () => {
+        this.setState((state) => ({
+            message: {
+                ...state.message,
+                isOpen: !state.isOpen,
+            }
+        }))
     }
 
     handleChange = event => {
@@ -41,12 +51,25 @@ class MessageSendBoxContainer extends PureComponent {
         });
     };
 
+    addEmoji = (emoji) => {
+        this.setState({
+            message: {
+                ...this.state.message,
+                text: this.state.message.text + emoji.colons
+            }
+        })
+    }
+
     render() {
+        const { isOpen } = this.state.message;
         return (
             <MessageSendBox  message={ this.state.message }
                              sendMessage={ this.sendMessage }
                              handleChange={ this.handleChange }
                              handleKeyDown={ this.handleKeyDown }
+                             handleClick={ this.handleClick }
+                             isOpen={ isOpen }
+                             addEmoji={ this.addEmoji }
                              />
         );
     }

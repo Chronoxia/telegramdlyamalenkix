@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import ReactDOMServer from 'react-dom/server';
-import { Emoji as EmojiMartEmoji } from 'emoji-mart';
+import { Emoji } from 'emoji-mart';
 import MarkdownIt from 'markdown-it';
 import emoji from 'markdown-it-emoji';
+
+import myEmoji from '../../emoji.json'
 
 import { deleteMessage } from 'actions/message';
 import "./Message.scss";
@@ -17,10 +19,11 @@ class Message extends PureComponent {
             linkify: true,
             typographer: true,
             breaks: false,
-        }).use(emoji);
+        }).use(emoji, {
+            defs: myEmoji
+        });
 
-        md.renderer.rules.emoji = (tokens, idx) =>
-            ReactDOMServer.renderToStaticMarkup(<EmojiMartEmoji emoji={tokens[idx].markup} size={25} />);
+        md.renderer.rules.emoji = (tokens, idx) => ReactDOMServer.renderToStaticMarkup(<Emoji emoji={tokens[idx].markup} size={25} />);
 
         const rawMarkup = md.render(text);
         return {__html : rawMarkup};

@@ -23,13 +23,14 @@ const MessageSendBox = ({
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}/>
             <Emoji
-                emoji={{id: 'face_with_raised_eyebrow'}}
+                emoji=':grin:'
                 size={24}
                 onClick={handleClick}
             />
             {isOpen &&
             <Picker
                 emojiSize={24}
+                include={['recent', 'people']}
                 style={{position: 'absolute', right: '0', bottom: '50px', 'overflowY': 'hidden', 'zIndex': '10'}}
                 onSelect={addEmoji}
             />

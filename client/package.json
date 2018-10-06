@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "bootstrap": "^4.1.1",
-    "emoji-js": "^3.4.1",
     "emoji-mart": "^2.8.1",
     "markdown-it": "^8.4.2",
     "markdown-it-emoji": "^1.4.0",
@@ -43,7 +42,6 @@
     "redux-actions": "^2.6.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "remarkable": "^1.7.1",
     "socket.io-client": "^2.1.1"
   }
 }

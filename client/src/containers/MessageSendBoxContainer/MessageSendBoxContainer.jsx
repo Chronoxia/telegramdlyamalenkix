@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from "react-redux";
-import { EmojiConvertor } from "emoji-js";
+
 import { addMessage } from "actions/message";
 import MessageSendBox from "../../components/MessageSendBox/MessageSendBox";
 

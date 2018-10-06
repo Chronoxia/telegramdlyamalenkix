@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { deleteConversation } from 'actions/conversation';
-import MessageSendBoxContainer from "containers/MessageSendBoxContainer";
-import MessagesList from "components/MessagesList/MessagesList";
-import "./Chat.scss";
+
+import MessageSendBoxContainer from 'containers/MessageSendBoxContainer';
+import MessagesList from 'components/MessagesList/MessagesList';
+import './Chat.scss';
 
 class Chat extends Component {
     state = {
@@ -34,7 +35,7 @@ class Chat extends Component {
         e.preventDefault();
         const { deleteConversation, conversation } = this.props;
         deleteConversation(conversation._id);
-    }
+    };
 
     render() {
         const { conversation, userId, chosenUser } = this.props;
@@ -61,7 +62,7 @@ class Chat extends Component {
             </div>
         )
     }
-};
+}
 
 const mapStateToProps = (state, ownProps) => ({
     conversation: state.conversations.conversations[ownProps.conversation] || {_id: null, messages: []},
@@ -71,7 +72,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     deleteConversation: (id) => dispatch(deleteConversation(id))
-})
+});
 
 export default connect(
     mapStateToProps, 

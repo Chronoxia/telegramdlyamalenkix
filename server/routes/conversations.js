@@ -40,6 +40,8 @@ router.get('/', checkAuth, (req, res) => {
                         path: 'user',
                         select: 'nickname'
                     })
+                    .sort("-createdAt")
+                    .limit(10)
                     .then((messages) => {
                         fullConversations[_id] = { _id, messages, title, author, image, participants, online };
                         if (Object.keys(fullConversations).length === conversations.length) {

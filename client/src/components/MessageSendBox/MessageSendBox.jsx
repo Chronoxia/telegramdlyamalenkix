@@ -30,7 +30,7 @@ const MessageSendBox = ({
             {isOpen &&
             <Picker
                 emojiSize={24}
-                include={['recent', 'people']}
+                include={['recent', 'people', 'nature', 'food', 'activity']}
                 style={{position: 'absolute', right: '0', bottom: '50px', 'overflowY': 'hidden', 'zIndex': '10'}}
                 onSelect={addEmoji}
             />

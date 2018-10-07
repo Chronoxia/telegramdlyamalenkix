@@ -45,7 +45,7 @@ class ChatPage extends PureComponent {
                 <div className="chat-box">
                     <div className="chat-box__conversations">
                         <div>
-                            <AutocompleteContainer/>
+                            <AutocompleteContainer />
                             <button className="chat-box__new" onClick={this.showModal}>
                                 +
                             </button>

@@ -30,9 +30,9 @@ class AutocompleteContainer extends PureComponent {
         }
     };
 
-    selectUser = (userId) => {
+    selectUser = (user) => {
         const { checkConversation, clearSearched } = this.props;
-        checkConversation(userId);
+        checkConversation(user._id);
         this.setState({
             searchValue: '',
         });

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import Message from "components/Message";
 import './MessagesList.css';
 
@@ -7,7 +8,6 @@ const MessagesList = ({
     userId,
     handleToggle,
     messages
-
 }) => (
     <div className="messages">
         {conversation.messages.map((message) =>  (
@@ -20,5 +20,12 @@ const MessagesList = ({
         }
     </div>
 );
+
+MessagesList.propTypes = {
+    conversation: PropTypes.object.isRequired,
+    userId: PropTypes.string.isRequired,
+    handleToggle: PropTypes.func.isRequired,
+    messages: PropTypes.array.isRequired,
+};
 
 export default MessagesList;

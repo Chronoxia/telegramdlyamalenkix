@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { createConversation } from 'actions/conversation';
+import {checkConversation, createConversation} from 'actions/conversation';
 import { loadUsers } from "actions/users";
 import NewConversationModal from "components/NewConversationModal";
+import {clearSearched, searchUsers} from "actions/searchedUsers";
 
 class NewConversationModalContainer extends Component {
   state = {
@@ -11,13 +12,28 @@ class NewConversationModalContainer extends Component {
     isEditing: false,
     participants: [],
     image: null,
+    searchValue: '',
   };
 
   handleChange = (e) => {
     this.setState({
       title: e.target.value,
     })
-  }
+  };
+
+  handleChangeSearch = (e) => {
+    this.setState({
+        searchValue: e.target.value
+    });
+
+    const { searchUsers, clearSearched } = this.props;
+
+    if (this.state.searchValue.length < 1) {
+      clearSearched();
+    }
+
+    searchUsers(this.state.searchValue);
+  };
 
   handleBlur = (e) => {
     this.handleSave(e.target.value);
@@ -39,9 +55,9 @@ class NewConversationModalContainer extends Component {
         this.setState({
           image: r.target.result
         })
-    }
+    };
     reader.readAsDataURL(file);
-}
+  };
 
   handleDoubleClick = () => {
     this.setState({
@@ -67,49 +83,64 @@ class NewConversationModalContainer extends Component {
     const { title, participants, image } = this.state;
 
     createConversation(title, participants, image);
+    this.setState({
+      title: 'Name',
+      isEditing: false,
+      participants: [],
+      image: null,
+    });
     closeModal();
   };
 
+  handleClose = () => {
+    this.setState({
+      title: 'Name',
+      isEditing: false,
+      participants: [],
+      image: null,
+    });
+
+    this.props.closeModal();
+  };
+
   render() {
-    const { users, isOpen, closeModal } = this.props;
-    console.log(this.props);
-    const { participants, image, isEditing, title } = this.state;
+    const { users, isOpen } = this.props;
 
     return (
       <NewConversationModal
           handlePic={this.handlePic}
           handleClick={this.handleClick}
           handleSend = {this.handleSend}
-          closeModal={closeModal}
+          closeModal={ this.handleClose }
           handleBlur={this.handleBlur}
           handleKeyDown={this.handleKeyDown}
           handleChange={this.handleChange}
           handleDoubleClick={this.handleDoubleClick}
+          handleChangeSearch={ this.handleChangeSearch }
           users={users}
-          participants={participants}
-          image={image}
-          isEditing={isEditing}
-          title={title}
+          { ...this.state }
           isOpen={isOpen}
+          clearSearched={this.props.clearSearched}
       />
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  users: state.users.entities,
-})
+  users: state.searchedUsers.users,
+});
 
 const mapDispatchToProps = (dispatch, props) => ({
     ...props,
   getUsers: () => dispatch(loadUsers()),
   createConversation: (title, participants, image) => dispatch(createConversation(title, participants, image)),
-  cancel: () => console.log('yay!'),
-})
+  searchUsers: (searchValue) => dispatch(searchUsers(searchValue)),
+  clearSearched: () => dispatch(clearSearched())
+});
 
 NewConversationModalContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NewConversationModalContainer)
+)(NewConversationModalContainer);
 
 export default NewConversationModalContainer;

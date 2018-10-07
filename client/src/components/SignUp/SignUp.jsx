@@ -8,6 +8,7 @@ import {
     Col,
     Row,
 } from "react-bootstrap";
+import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import './SignUp.css';
@@ -64,5 +65,13 @@ const SignUp = ({
         </Col>
     </Row>
 );
+
+SignUp.propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    submitted: PropTypes.bool.isRequired,
+    handlePic: PropTypes.func.isRequired,
+};
 
 export default SignUp;

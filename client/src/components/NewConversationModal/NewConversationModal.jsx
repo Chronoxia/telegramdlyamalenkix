@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from 'react';
-import './NewConversationModal.scss'
+import './NewConversationModal.scss';
+import Autocomplete from "components/Autocomplete/Autocomplete";
 
 class NewConversationModal extends Component {
     renderTitle() {
-        const { title, isEditing, handleBlur, handleKeyDown, handleChange, handleDoubleClick} = this.props;
+        const { title, isEditing, handleBlur, handleKeyDown, handleChange, handleDoubleClick } = this.props;
 
         if (isEditing) {
             return (
@@ -16,19 +17,21 @@ class NewConversationModal extends Component {
             )
         }
         return (
-            <Fragment>
                 <p  className='newConversation__title'
                     onDoubleClick={ handleDoubleClick }
                 >
                     {title}
                 </p>
-            </Fragment>
         )
     }
 
+    selectUser = (user) => {
+        this.props.handleClick(user);
+        this.props.clearSearched();
+    };
+
     render() {
-        const { image, isOpen, users, handlePic, handleClick, participants, handleSend, closeModal} = this.props;
-        console.log(this.props);
+        const { image, isOpen, users, handlePic, handleClick, participants, handleSend, closeModal, searchValue, handleChangeSearch} = this.props;
 
         return (
             isOpen && <div className={'newConversation modal'}>
@@ -36,22 +39,12 @@ class NewConversationModal extends Component {
                     { this.renderTitle() }
                     <input type="file" name="img" onChange={ handlePic }/>
                     {image && <img src={image} style={{width: '100px', height: '100px'}}/>}
-                    <ul>
-                        {users.map(u => (
-                            <li
-                                key={u._id}
-                            >
-                                <span>
-                                  {u.nickname}
-                                </span>
-                                <button
-                                    onClick={() => { handleClick(u)}}
-                                >
-                                    add
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                    <Autocomplete
+                        handleChange={ handleChangeSearch }
+                        selectUser={ this.selectUser }
+                        searchValue={ searchValue }
+                        searchedUsers={ users }
+                    />
                     <ul>
                         {participants.map(u => (
                             <li
@@ -77,4 +70,4 @@ class NewConversationModal extends Component {
     }
 }
 
-export default NewConversationModal
+export default NewConversationModal;

@@ -40,4 +40,7 @@ const MessageSendBox = ({
         <button onClick={sendMessage} className="message-send-box__btn">Send</button>
     </div>
 );
+
+
+
 export default MessageSendBox;

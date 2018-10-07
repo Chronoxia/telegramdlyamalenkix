@@ -42,5 +42,13 @@
             font-size: 16px;
             font-weight: 600;
         }
+
+        &__notification {
+            display: inline-block;
+            background-color: #e89e98;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+        }
     }
 }

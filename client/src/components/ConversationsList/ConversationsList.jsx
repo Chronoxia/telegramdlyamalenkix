@@ -1,5 +1,6 @@
 import React from 'react';
-import "./ConversationsList.scss"
+import PropTypes from 'prop-types';
+import "./ConversationsList.scss";
 
 
 const ConversationsList = ({
@@ -21,11 +22,17 @@ const ConversationsList = ({
 					<img src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}
 						 className={`conversation__image conversation__image--${a}`} />
 					<span className="conversation__title">{conversation.title}</span>
-                    {conversation.newMessages && <span style={{ display: 'inline-block', backgroundColor: '#e89e98', borderRadius: "50%", width: "16px", height: "16px"}} />}
+                    {conversation.newMessages && <span className="conversation__notification" />}
 				</li>
 			)
 		})}
 	</ul>
 );
+
+ConversationsList.propTypes = {
+	conversations: PropTypes.array.isRequired,
+	onClick: PropTypes.func.isRequired,
+	activeConversation: PropTypes.string,
+};
 
 export default ConversationsList;

@@ -1,6 +1,12 @@
 import { handleActions } from 'redux-actions';
-
-import { loadStarted, loadComplete, loadFailed, addUser, chooseUser } from 'actions/users'
+import { 
+    loadStarted, 
+    loadComplete, 
+    loadFailed, 
+    addUser, 
+    chooseUser 
+} from 'actions/users';
+import { changeConversation } from 'actions/conversation';
 
 const initialState = {
     error: null,
@@ -38,15 +44,21 @@ export default handleActions({
             entities: state.entities.concat(action.payload)
         }
     },
+    // todo
     [chooseUser]: (state, action) => {
         return {
             ...state,
             chosenUser: action.payload,
-            conversations: {
-                ...state.conversations,
-                activeConversation: null,
-            }
+            // conversations: {
+            //     ...state.conversations,
+            //     activeConversation: null,
+            // }
         }
     },
-
+    [changeConversation]: (state, action) => {
+        return {
+            ...state,
+            chosenUser: null,
+        }
+    }
 }, initialState)

@@ -12,21 +12,25 @@ class Chat extends Component {
     };
 
     handleToggle = (id) => {
-        console.log(id);
         if (this.state.selectedMessages.some(m => m === id)) {
-            return this.setState({
+            this.setState({
                 selectedMessages: this.state.selectedMessages.filter(m => id !== m),
             })
+        } else {
+            this.setState({
+                selectedMessages: this.state.selectedMessages.concat(id),
+            })
         }
-        this.setState({
-            selectedMessages: this.state.selectedMessages.concat(id),
-        })
 
     };
 
-    getStatusProperty() {
-        const { conversation, userId } = this.props;
+    getStatusProperty() {   
+        const { conversation, userId, chosenUser } = this.props;
         if (!conversation.participants) return;
+        if (chosenUser) {
+            return chosenUser.online ? 'online' : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
+        }
+
         const companion = conversation.participants.filter(item => item._id !== userId)[0];
         return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
     }
@@ -43,12 +47,20 @@ class Chat extends Component {
         getMessages(conversation._id, conversation.page);
     }
 
+    getImage = () => {
+        const { conversation, userId, chosenUser } = this.props;
+        console.log(chosenUser, conversation);
+        if (conversation.image) return conversation.image;
+        if (chosenUser && chosenUser.image) return chosenUser.image;
+        return "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg";
+    }
+
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
             <div className="chat">
                 <div className="chat-info">
-                    <img className="chat-info__image" src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}/>
+                    <img className="chat-info__image" src={ this.getImage() }/>
                     <span className="chat-info__title" >{conversation.title}</span>
                     {!conversation.author && <span className="chat-info__status">{this.getStatusProperty()}</span>}
                     <span
@@ -58,11 +70,13 @@ class Chat extends Component {
                         x
                     </span>
                 </div>
-                <button 
-                    onClick={ this.handleLoad }
-                >
-                    load more
-                </button>
+                { conversation.messages && 
+                    <button 
+                        onClick={ this.handleLoad }
+                    >
+                        { conversation.isFetching ? 'loading...' : 'load more' }
+                    </button>
+                }
                 <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
                     <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
 

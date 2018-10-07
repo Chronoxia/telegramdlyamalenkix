@@ -17,9 +17,12 @@ export const getConversations = () => (dispatch) => {
 		.catch(err => dispatch(getConversationsFailure(err)))
 };
 
-export const checkConversation = (companionId) => (dispatch) => {
+export const checkConversation = (companionId) => (dispatch, getState) => {
     const token = localStorage.getItem('token');
-    dispatch(checkConversationStarted());
+	dispatch(checkConversationStarted());
+
+	const user = getState().searchedUsers.users.find(user => user._id === companionId);
+	
     fetch(`http://localhost:5000/conversations/conversationByCompanion/${companionId}`, {
         method: "get",
         headers: {
@@ -31,7 +34,7 @@ export const checkConversation = (companionId) => (dispatch) => {
             if (conversation) {
                 dispatch(changeConversation(conversation._id))
             } else {
-                dispatch(chooseUser(companionId))
+                dispatch(chooseUser(user))
             }
         })
         .catch(err => dispatch(checkConversationFailed(err)))

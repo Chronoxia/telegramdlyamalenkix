@@ -51,7 +51,7 @@ router.post('/create', checkAuth, (req, res) => {
 
                         keys.forEach(k => {
                             if (conversation.participants.some(p => p.toString() === users[k] && users[k] === authorId)) {
-                                req.io.to(k).emit('CONVERSATION_RECEIVE', {
+                                req.io.to(k).emit('CONVERSATION_CREATED', {
                                     _id: conversation._id,
                                     messages: [],
                                     title: companion.nickname,

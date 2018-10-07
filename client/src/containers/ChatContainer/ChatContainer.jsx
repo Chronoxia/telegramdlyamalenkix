@@ -7,9 +7,8 @@ import Chat from "components/Chat";
 
 class ChatContainer extends PureComponent {
     render() {
-        const { conversation, userId, chosenUser } = this.props;
         return (
-            <Chat conversation={ conversation } userId={ userId } choosenUser={chosenUser} />
+            <Chat { ...this.props } />
         );
     }
 }

@@ -52,7 +52,6 @@ io.on('connection', socket => {
         delete users[socket.id];
     });
     socket.on('MESSAGE_ADD', (message) => {
-        console.log(message);
         io.to(message.conversationId).emit(`MESSAGE_RECEIVED`, message)
     });
     socket.on('USER_JOIN', (room) => {
@@ -77,7 +76,7 @@ io.on('connection', socket => {
         User.findOneAndUpdate(
             { _id: user._id },
             { $set: { online: true } },
-            { new: true }).then((user) => console.log(user));
+            { new: true }).then((user) => console.log(2));
     })
 });
 

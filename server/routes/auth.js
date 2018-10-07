@@ -21,7 +21,6 @@ router.post('/register', (req, res) => {
     });
     user.save()
         .then(user => {
-            console.log(user);
             const token = jwt.sign({id: user._id}, config.secret, {
                 expiresIn: 86400 //24 hours
             });
@@ -53,7 +52,6 @@ router.get('/check-token', (req, res) => {
     if (!token) {
         return res.status(401).send();
     }
-    console.log(req.userId);
     User.findById(req.userId)
         .then((user) => res.status(200).send({ user: {nickname: user.nickname, _id: user._id, image: user.image}}));
 });

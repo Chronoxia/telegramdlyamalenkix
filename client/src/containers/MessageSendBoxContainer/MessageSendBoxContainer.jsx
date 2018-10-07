@@ -23,7 +23,7 @@ class MessageSendBoxContainer extends PureComponent {
                 isOpen: !state.message.isOpen,
             }
         }))
-    }
+    };
 
     handleChange = event => {
         this.setState({
@@ -42,8 +42,8 @@ class MessageSendBoxContainer extends PureComponent {
     sendMessage = () => {
         const { message } = this.state;
         if (!this.state.message.text.trim()) return;
-        const  { addMessage, conversationId, userId, companionId } = this.props;
-        addMessage(message.text, conversationId, userId, companionId );
+        const  { addMessage, conversationId, userId, companion } = this.props;
+        addMessage(message.text, conversationId, userId, companion);
         this.setState({
             message: {
                 text: ''
@@ -58,7 +58,7 @@ class MessageSendBoxContainer extends PureComponent {
                 text: this.state.message.text + emoji.colons,
             }
         })
-    }
+    };
 
     render() {
         const { isOpen } = this.state.message;
@@ -78,13 +78,13 @@ class MessageSendBoxContainer extends PureComponent {
 const mapStateToProps = (state, props) => ({
     ...props,
     userId: state.user.user._id,
-    companionId: state.users.chosenUser,
+    companion: state.users.chosenUser,
     conversationId: state.conversations.activeConversation,
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
     ...props,
-    addMessage: (message, conversationId, authorId, companionId) => dispatch(addMessage(message, conversationId, authorId, companionId)),
+    addMessage: (message, conversationId, authorId, companion) => dispatch(addMessage(message, conversationId, authorId, companion)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageSendBoxContainer)

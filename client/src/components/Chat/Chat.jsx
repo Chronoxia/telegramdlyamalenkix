@@ -85,7 +85,7 @@ class Chat extends Component {
     render() {
         const { conversation, userId, chosenUser } = this.props;
         const { profileModalIsOpen } = this.state;
-
+        console.log(chosenUser);
         return (
             <div className={conversation._id || chosenUser ? "chat" : "chat--not-selected"}>
                 {(conversation._id || chosenUser) &&

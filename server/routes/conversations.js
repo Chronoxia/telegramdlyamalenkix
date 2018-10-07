@@ -63,7 +63,6 @@ router.get('/', checkAuth, (req, res) => {
 
 router.post('/create', checkAuth, (req, res) => {
     const { participants, title, image, author } = req.body;
-    // console.log(7, req.userId);
     const { userId } = req;
     User.find({_id: {$in: participants}})
         .then((users) => Conversation.create({

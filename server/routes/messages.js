@@ -33,12 +33,12 @@ router.get('/all/:conversationId', checkAuth, (req, res) => {
  * @param req.body.conversationId {String} - Author's id
  */
 router.post('/create', checkAuth, (req, res) => {
-    const {text, conversationId, authorId} = req.body;
+    const {text, conversationId, authorId, companion } = req.body;
+    const companionId = companion ? companion._id : '';
     req.io.emit('yay', 'yay');
     Conversation.findById(conversationId)
         .then((conversation) => {
             if (!conversation) {
-                const {companionId} = req.body;
 
                 return Conversation.create({
                         participants: [authorId, companionId]
@@ -47,7 +47,6 @@ router.post('/create', checkAuth, (req, res) => {
                         const users = require('../index').users;
                         const keys = Object.keys(users);
                         const author = await User.findById(authorId);
-                        const companion = await User.findById(companionId);
 
                         keys.forEach(k => {
                             if (conversation.participants.some(p => p.toString() === users[k] && users[k] === authorId)) {
@@ -59,8 +58,9 @@ router.post('/create', checkAuth, (req, res) => {
                                     online: companion.online,
                                 })
                             }
-
+                            console.log(conversation.participants.some(p => p.toString() === users[k] && users[k] === companionId));
                             if (conversation.participants.some(p => p.toString() === users[k] && users[k] === companionId)) {
+                                console.log(1);
                                 req.io.to(k).emit('CONVERSATION_RECEIVE', {
                                     _id: conversation._id,
                                     messages: [],
@@ -98,15 +98,12 @@ router.post('/create', checkAuth, (req, res) => {
 router.put('/removeById', checkAuth, (req, res) => {
     const { userId } = req;
     const { messageId } = req.body;
-    console.log(messageId);
     Messages.findOneAndUpdate(
         { _id: messageId },
         { $pull: { available: userId } },
     )
-        .then((message) => {
-            console.log(message);
-            return res.status(200).json(message)
-        })
+        .then((message) => res.status(200).json(message))
+        .catch(err => console.log(err));
 });
 
 /**

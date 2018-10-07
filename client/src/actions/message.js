@@ -18,6 +18,7 @@ export const deleteMessage = (id) => (dispatch) => {
 };
 
 export const addMessage  = (text, conversationId, authorId, companionId) => (dispatch) => {
+    console.log(text, conversationId, authorId, companionId);
     const token = localStorage.getItem('token');
     dispatch(addMessageStarted());
     fetch(`http://localhost:5000/messages/create`, {

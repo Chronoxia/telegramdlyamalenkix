@@ -1,4 +1,4 @@
-@import "sass/colors.scss";
+@import "../../sass/colors.scss";
 
 .conversations-list {
     background-color: white;
@@ -13,10 +13,13 @@
         padding: 10px 30px;
         border-bottom: 1px solid $mint;
 
+        &--active {
+            background-color: #e7e9e7;
+        }
 
         &:hover {
             cursor: pointer;
-            background-color: $light-mint;
+            background-color: #e7e9e7;
         }
 
         &__image {

@@ -15,9 +15,10 @@ class ConversationsListContainer extends PureComponent {
     }
 
     render() {
-        const { conversations, changeConversation } = this.props;
+        const { conversations, changeConversation, activeConversation } = this.props;
         return (
-            <ConversationsList 
+            <ConversationsList
+                activeConversation={ activeConversation }
                 conversations={ conversations } 
                 onClick={ changeConversation }
             />
@@ -30,6 +31,7 @@ function mapStateToProps(state, props) {
         ...props,
         user: state.user.user,
         conversations: getAllConversations(state),
+        activeConversation: state.conversations.activeConversation
     }
 }
 

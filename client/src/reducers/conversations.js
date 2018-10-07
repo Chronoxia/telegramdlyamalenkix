@@ -8,10 +8,15 @@ import {
     getConversationsSuccess,
     requestConversations,
     deleteConversationSuccess,
+} from "../actions/conversation";
+import {
+    addMessageSuccess,
+    deleteMessageSuccess,
+    getMessagesSuccess,
+    addNewMessageSuccess,
     requestMessages,
     getMessagesFailure,
-} from "../actions/conversation";
-import { addMessageSuccess, deleteMessageSuccess, getMessagesSuccess } from "../actions/message";
+} from "../actions/message";
 
 const initialState = {
   conversations: {},
@@ -45,12 +50,33 @@ export default handleActions({
         }
     },
     [changeConversation]: (state, action) => {
+        console.log(action.payload);
         return {
             ...state,
-            activeConversation: action.payload
+            activeConversation: action.payload,
+            conversations: {
+                ...state.conversations,
+                [action.payload]: {
+                    ...state.conversations[action.payload],
+                    newMessages: false,
+                }
+            }
         }
     },
     [addMessageSuccess]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.conversationId]: {
+                    ...state.conversations[action.payload.conversationId],
+                    newMessages: true,
+                    messages: state.conversations[action.payload.conversationId].messages.concat(action.payload)
+                }
+            }
+        }
+    },
+    [addNewMessageSuccess]: (state, action) => {
         return {
             ...state,
             conversations: {

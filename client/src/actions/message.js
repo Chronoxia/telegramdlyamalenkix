@@ -46,6 +46,7 @@ export const deleteMessageFailure = createAction('[Message] Delete message faile
 export const addMessageStarted = createAction('[Message] Add message started');
 export const addMessageSuccess = createAction('[Message] Add message success');
 export const addMessageFailed = createAction('[Message] Add message failed');
+export const addNewMessageSuccess = createAction('[Message] Add new message success');
 
 export const requestMessages = createAction('[Message] Request messages');
 export const getMessagesSuccess = createAction('[Conversation] Get messages success');

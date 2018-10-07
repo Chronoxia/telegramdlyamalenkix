@@ -43,7 +43,7 @@ router.get('/', checkAuth, (req, res) => {
                     .sort("-createdAt")
                     .limit(10)
                     .then((messages) => {
-                        fullConversations[_id] = { _id, messages: messages.reverse(), title, author, image, participants, online, page: 1 };
+                        fullConversations[_id] = { _id, messages: messages.reverse(), title, author, image, participants, online, page: 1, newMessages: false, };
                         if (Object.keys(fullConversations).length === conversations.length) {
                             return res.status(200).json({ conversations: fullConversations });
                         }

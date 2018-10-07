@@ -8,7 +8,7 @@ import {
     createConversationSuccess, 
     changeConversation,
 } from 'actions/conversation';
-import { addMessageSuccess } from "actions/message";
+import { addMessageSuccess, addNewMessageSuccess } from "actions/message";
 import ChatPage from "components/ChatPage";
 
 class ChatPageContainer extends PureComponent {
@@ -24,14 +24,18 @@ class ChatPageContainer extends PureComponent {
         });
         const { user } = this.props;
         socket.emit('USER_CONNECTED', user);    
-        const { addMessageSuccess, addConversation, changeConversation } = this.props;
+        const { addMessageSuccess, addConversation, changeConversation, addNewMessageSuccess } = this.props;
         socket.on('MESSAGE_RECEIVED', (message) => {
-            addMessageSuccess(message);
+            if (message.author === user._id) {
+                addNewMessageSuccess(message);
+            } else {
+                addMessageSuccess(message);
+            }
         });
         socket.on('CONVERSATION_RECEIVE', (conversation) => {
             addConversation(conversation);
             socket.emit('USER_JOIN', conversation._id)
-        })
+        });
         socket.on('CONVERSATION_CREATED', (conversation) => {
             addConversation(conversation);
             changeConversation(conversation._id);
@@ -61,6 +65,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => ({
     getConversations: () => dispatch(getConversations()),
     addMessageSuccess: (message) => dispatch(addMessageSuccess(message)),
+    addNewMessageSuccess: (message) => dispatch(addNewMessageSuccess()),
     addConversation: (conversation) => dispatch(createConversationSuccess(conversation)),
     changeConversation: (id) => dispatch(changeConversation(id)),
     getUsers: () => dispatch(loadUsers()),

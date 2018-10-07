@@ -26,10 +26,11 @@ class Chat extends Component {
 
     getStatusProperty() {   
         const { conversation, userId, chosenUser } = this.props;
-        if (!conversation.participants) return;
         if (chosenUser) {
-            return chosenUser.online ? 'online' : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
+            return chosenUser.online ? 'online' : `last seen at ${new Date(chosenUser.updatedAt).toLocaleString()}`;
         }
+
+        if (!conversation.participants) return;
 
         const companion = conversation.participants.filter(item => item._id !== userId)[0];
         return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
@@ -45,15 +46,22 @@ class Chat extends Component {
         const { conversation, getMessages } = this.props;
 
         getMessages(conversation._id, conversation.page);
-    }
+    };
 
     getImage = () => {
         const { conversation, userId, chosenUser } = this.props;
-        console.log(chosenUser, conversation);
         if (conversation.image) return conversation.image;
         if (chosenUser && chosenUser.image) return chosenUser.image;
         return "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg";
-    }
+    };
+
+    getTitle = () => {
+        const { chosenUser, conversation } = this.props;
+
+        if (chosenUser) return chosenUser.nickname;
+
+        return conversation.title
+    };
 
     render() {
         const { conversation, userId, chosenUser } = this.props;
@@ -61,7 +69,7 @@ class Chat extends Component {
             <div className="chat">
                 <div className="chat-info">
                     <img className="chat-info__image" src={ this.getImage() }/>
-                    <span className="chat-info__title" >{conversation.title}</span>
+                    <span className="chat-info__title" >{ this.getTitle() }</span>
                     {!conversation.author && <span className="chat-info__status">{this.getStatusProperty()}</span>}
                     <span
                         onClick={ this.handleClick }

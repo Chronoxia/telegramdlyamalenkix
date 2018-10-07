@@ -31,7 +31,7 @@ class NewConversationModal extends Component {
     };
 
     render() {
-        const { image, isOpen, users, handlePic, handleClick, participants, handleSend, closeModal, searchValue, handleChangeSearch} = this.props;
+        const { image, isOpen, users, handlePic, participants, handleSend, closeModal, searchValue, handleChangeSearch} = this.props;
 
         return (
             isOpen && <div className={'newConversation modal'}>

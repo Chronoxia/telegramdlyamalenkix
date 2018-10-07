@@ -1,4 +1,5 @@
-import React, {Fragment} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import './ProfileModal.scss';
 
 const ProfileModal = ({
@@ -36,5 +37,14 @@ const ProfileModal = ({
             </div>
         </div>
     );
+
+ProfileModal.propTypes = {
+    conversation: PropTypes.object.isRequired,
+    getImage: PropTypes.func.isRequired,
+    getTitle: PropTypes.func.isRequired,
+    getStatusProperty: PropTypes.func.isRequired,
+    getEmail: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+};
 
 export default ProfileModal;

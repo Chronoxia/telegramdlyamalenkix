@@ -21,7 +21,7 @@ const ConversationsList = ({
 					<img src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}
 						 className={`conversation__image conversation__image--${a}`} />
 					<span className="conversation__title">{conversation.title}</span>
-					{conversation.newMessages && <span>NEW MESSAGE ALO BLYAT</span>}
+                    {conversation.newMessages && <span style={{ display: 'inline-block', backgroundColor: '#e89e98', borderRadius: "50%", width: "16px", height: "16px"}} />}
 				</li>
 			)
 		})}

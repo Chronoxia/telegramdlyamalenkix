@@ -40,6 +40,7 @@ class Chat extends Component {
 
     handleClick = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const { deleteConversation, conversation } = this.props;
         deleteConversation(conversation._id);
     };
@@ -63,6 +64,18 @@ class Chat extends Component {
         if (chosenUser) return chosenUser.nickname;
 
         return conversation.title
+    };
+
+    getEmail = () => {
+        const { conversation, userId, chosenUser } = this.props;
+        if (chosenUser) {
+            return chosenUser.email;
+        }
+
+        if (!conversation.participants) return;
+
+        const companion = conversation.participants.filter(item => item._id !== userId)[0];
+        return companion.email;
     };
 
     handleClickModal = () => {
@@ -90,8 +103,14 @@ class Chat extends Component {
                     >
                         x
                     </span>
-                    <ProfileModal isOpen={profileModalIsOpen}
-                                  conversation={conversation}/>
+                    <ProfileModal
+                        conversation={conversation}
+                        isOpen={profileModalIsOpen}
+                        getImage={this.getImage}
+                        getTitle={this.getTitle}
+                        getEmail={this.getEmail}
+                        getStatusProperty={this.getStatusProperty}
+                    />
                 </div>
                 { conversation.messages &&
                     <button

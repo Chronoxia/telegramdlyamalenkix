@@ -8,6 +8,11 @@
     color: $dark-green;
     width: 400px;
     padding: 30px;
+
+    &__header {
+      border-bottom: $dark-mint;
+    }
+
     &__image {
       width: 60px;
       height: 60px;
@@ -22,13 +27,13 @@
 
     &__status {
       font-size: 14px;
-      position: absolute;
-      bottom: 10px;
-      left: 90px;
+      left: 110px;
+      top: 70px
     }
 
     &:hover {
       cursor: pointer;
     }
   }
+
 }

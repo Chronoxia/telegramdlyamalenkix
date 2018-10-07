@@ -1,27 +1,38 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import './ProfileModal.scss';
 
 const ProfileModal = ({
   conversation,
+  getImage,
+  getTitle,
+  getStatusProperty,
+  getEmail,
   isOpen
 }) => (
     isOpen &&
         <div className="modal profile modal">
             <div className="modal-main chat-info">
-                <img className="chat-info__image"
-                     src={conversation.image || "http://www.drawingforall.net/wp-content/uploads/2018/01/chidi-drawing-lesson.jpg"}/>
-                <span className="chat-info__title">{conversation.title}</span>
 
+                <div className="chat-info__header">
+                    <img className="chat-info__image" src={ getImage() }/>
+                    <span className="chat-info__title" >{ getTitle() }</span>
+                    {!conversation.author && <span className="chat-info__status">{getStatusProperty()}</span>}
+                </div>
 
-                {!conversation.author && <span className="chat-info__status"></span>}
+                <div className="chat-info__content">
+                    {!conversation.author && <div className="chat-info__email">{getEmail()}</div>}
+                    {conversation.author &&
+                    <div>
+                        <span >Participants of group: </span>
+                        <ul className="chat-info__participants">
+                            {conversation.participants.map((user) =>
+                                <li key={user._id}>
+                                    {user.nickname}
+                                </li>)}
+                        </ul>
+                    </div>}
+                </div>
 
-                {conversation.author &&
-                    <ul className="chat-info__participants">
-                        {conversation.participants.map((user) =>
-                            <li key={user._id}>
-                                {user.nickname}
-                            </li>)}
-                    </ul>}
             </div>
         </div>
     );

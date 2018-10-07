@@ -33,7 +33,7 @@ export class SettingsDropdown extends PureComponent {
                 </div>
                 { isOpen &&
                     <ul className="settings-dropdown__options">
-                        <li className="settings-dropdown__item">Settings</li>
+                        {/*<li className="settings-dropdown__item">Settings</li>*/}
                         <li className="settings-dropdown__item" onClick={ this.handleClick }>LogOut</li>
                     </ul>
                 }

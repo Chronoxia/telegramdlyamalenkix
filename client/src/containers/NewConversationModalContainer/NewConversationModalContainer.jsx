@@ -3,41 +3,15 @@ import { connect } from 'react-redux';
 
 import { createConversation } from 'actions/conversation';
 import { loadUsers } from "actions/users";
+import NewConversationModal from "components/NewConversationModal";
 
-class Modal extends Component {
+class NewConversationModalContainer extends Component {
   state = {
     title: 'Name',
     isEditing: false,
     participants: [],
     image: null,
   };
-
-  componentDidMount() {
-     // this.props.getUsers()
-  }
-
-  renderTitle() {
-    const { title, isEditing } = this.state;
-
-    if (isEditing) {
-      return (
-        <input 
-          onBlur={ this.handleBlur }
-          onKeyDown={ this.handleKeyDown }
-          onChange={ this.handleChange }
-          value={title}
-        />
-      )
-    }
-
-    return (
-      <p
-        onDoubleClick={ this.handleDoubleClick }
-      >
-        {title}
-      </p>
-    )
-  }
 
   handleChange = (e) => {
     this.setState({
@@ -97,51 +71,27 @@ class Modal extends Component {
   };
 
   render() {
-    const { users, isOpen } = this.props;
+    const { users, isOpen, closeModal } = this.props;
+    console.log(this.props);
+    const { participants, image, isEditing, title } = this.state;
 
     return (
-      <div className={isOpen ? 'modal display-block' : 'modal display-none'}>
-        <div className="modal-main">
-        { this.renderTitle() }
-        <input type="file" name="img" onChange={ this.handlePic }/>
-        { this.state.image && <img src={this.state.image} style={{ width: '100px', height: '100px'}} />}
-        <ul>
-          {users.map(u => (
-            <li 
-              key={u._id}
-            >
-              <span>
-                {u.nickname}
-              </span>
-              <button
-                onClick={() => this.handleClick(u)}
-              >
-                add
-              </button>
-            </li>
-          ))}
-        </ul>
-        <ul>
-          {this.state.participants.map(u => (
-            <li
-              key={u._id}
-            >
-              {u.nickname}
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={ this.handleSend }
-        >
-          Create
-        </button>
-        <button
-          onClick={ this.props.closeModal }
-        >
-          Close
-        </button>
-        </div>
-      </div>
+      <NewConversationModal
+          handlePic={this.handlePic}
+          handleClick={this.handleClick}
+          handleSend = {this.handleSend}
+          closeModal={closeModal}
+          handleBlur={this.handleBlur}
+          handleKeyDown={this.handleKeyDown}
+          handleChange={this.handleChange}
+          handleDoubleClick={this.handleDoubleClick}
+          users={users}
+          participants={participants}
+          image={image}
+          isEditing={isEditing}
+          title={title}
+          isOpen={isOpen}
+      />
     )
   }
 }
@@ -157,9 +107,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   cancel: () => console.log('yay!'),
 })
 
-Modal = connect(
+NewConversationModalContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Modal)
+)(NewConversationModalContainer)
 
-export default Modal;
+export default NewConversationModalContainer;

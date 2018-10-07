@@ -18,6 +18,7 @@ p, ul {
     left: 0;
     width: 100%;
     height: 100%;
+    display: block;
     background: rgba(0, 0, 0, 0.6);
 }
 
@@ -29,12 +30,6 @@ p, ul {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.display-block {
-    display: block;
-}
-
-.display-none {
-    display: none;
+    padding: 20px;
+    border-radius: 10px;
 }

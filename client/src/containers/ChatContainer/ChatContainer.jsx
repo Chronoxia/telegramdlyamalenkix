@@ -2,19 +2,13 @@ import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import { loadUsers } from 'actions/users';
-import Modal from '../Modal';
 import Chat from "components/Chat";
 
 class ChatContainer extends PureComponent {
     render() {
         const { conversation, userId, chosenUser } = this.props;
-        if (!(conversation || chosenUser)) {
-            return (
-                <Modal />
-            )
-        }
         return (
-            <Chat conversation={ conversation } userId={ userId } />
+            <Chat conversation={ conversation } userId={ userId } choosenUser={chosenUser} />
         );
     }
 }

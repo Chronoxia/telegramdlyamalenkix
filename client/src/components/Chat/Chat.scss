@@ -4,6 +4,25 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
+
+    &--not-selected {
+        background-color: #eef0ee;
+        height: 100%;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__delete {
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 600;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 
     .chat-info {
         height: 80px;
@@ -31,26 +50,24 @@
             bottom: 10px;
             left: 90px;
         }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .messages-list {
+        background-color: white;
+        border-radius: 10px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 }
 
-.messages-list {
-    background-color: white;
-    border-radius: 10px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
 
-.not-selected-conversation {
-    background-color: #eef0ee;
-    height: 100%;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .inform-message {
     background-color: #c9cdcb;

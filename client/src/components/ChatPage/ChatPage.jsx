@@ -3,9 +3,11 @@ import React, {PureComponent} from 'react';
 import ConversationsListContainer from "containers/ConversationsListContainer";
 import ChatContainer from "containers/ChatContainer";
 import AutocompleteContainer from "containers/AutocompleteContainer";
-import Modal from "containers/Modal";
-import "./ChatPage.scss";
 import SettingsDropdown from "../SettingsDropdown/SettingsDropdown";
+import NewConversationModalContainer
+    from "containers/NewConversationModalContainer";
+import "./ChatPage.scss";
+
 
 
 class ChatPage extends PureComponent {
@@ -24,6 +26,7 @@ class ChatPage extends PureComponent {
     };
 
     closeModal = () => {
+        console.log("close");
         this.setState({
             isOpen: false,
         })
@@ -46,7 +49,7 @@ class ChatPage extends PureComponent {
                             <button className="chat-box__new" onClick={this.showModal}>
                                 +
                             </button>
-                            <Modal
+                            <NewConversationModalContainer
                                 isOpen={this.state.isOpen}
                                 closeModal={this.closeModal}
                             />

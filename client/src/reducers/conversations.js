@@ -127,15 +127,14 @@ export default handleActions({
             ...state,
             conversations: {
                 ...state.conversations,
-                [action.payload.id]: {
-                    ...state.conversations[action.payload.id],
+                [action.payload]: {
+                    ...state.conversations[action.payload],
                     isFetching: true,
                 }
             }
         }
     },
     [getMessagesSuccess]: (state, action) => {
-        console.log(state.conversations[action.payload.id]);
         return {
             ...state,
             conversations: {

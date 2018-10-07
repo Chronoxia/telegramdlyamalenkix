@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { deleteConversation } from 'actions/conversation';
-
+import { getMessages } from 'actions/message';
 import MessageSendBoxContainer from 'containers/MessageSendBoxContainer';
 import MessagesList from 'components/MessagesList/MessagesList';
 import './Chat.scss';
@@ -37,6 +37,12 @@ class Chat extends Component {
         deleteConversation(conversation._id);
     };
 
+    handleLoad = () => {
+        const { conversation, getMessages } = this.props;
+
+        getMessages(conversation._id, conversation.page);
+    }
+
     render() {
         const { conversation, userId, chosenUser } = this.props;
         return (
@@ -52,7 +58,11 @@ class Chat extends Component {
                         x
                     </span>
                 </div>
-
+                <button 
+                    onClick={ this.handleLoad }
+                >
+                    load more
+                </button>
                 <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
                     <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
 
@@ -71,7 +81,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    deleteConversation: (id) => dispatch(deleteConversation(id))
+    deleteConversation: (id) => dispatch(deleteConversation(id)),
+    getMessages: (id, page) => dispatch(getMessages(id, page)),
 });
 
 export default connect(

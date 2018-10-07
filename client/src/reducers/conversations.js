@@ -7,9 +7,11 @@ import {
     getConversationsFailure,
     getConversationsSuccess,
     requestConversations,
-    deleteConversationSuccess
+    deleteConversationSuccess,
+    requestMessages,
+    getMessagesFailure,
 } from "../actions/conversation";
-import { addMessageSuccess, deleteMessageSuccess } from "../actions/message";
+import { addMessageSuccess, deleteMessageSuccess, getMessagesSuccess } from "../actions/message";
 
 const initialState = {
   conversations: {},
@@ -90,6 +92,45 @@ export default handleActions({
                 [action.payload.id]: {
                     ...state.conversations[action.payload.id],
                     messages: []
+                }
+            }
+        }
+    },
+    [requestMessages]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.id]: {
+                    ...state.conversations[action.payload.id],
+                    isFetching: true,
+                }
+            }
+        }
+    },
+    [getMessagesSuccess]: (state, action) => {
+        console.log(state.conversations[action.payload.id]);
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.id]: {
+                    ...state.conversations[action.payload.id],
+                    isFetching: false,
+                    page: state.conversations[action.payload.id].page + 1,
+                    messages: state.conversations[action.payload.id].messages.reverse().concat(action.payload.data.reverse()).reverse(),
+                }
+            }
+        }
+    },
+    [getMessagesFailure]: (state, action) => {
+        return {
+            ...state,
+            conversations: {
+                ...state.conversations,
+                [action.payload.id]: {
+                    ...state.conversations[action.payload.id],
+                    isFetching: false,
                 }
             }
         }

@@ -1,5 +1,6 @@
 import socket from "../socket";
 import {createAction} from "redux-actions";
+import { handleErrors } from '../utils';
 
 export const deleteMessage = (id) => (dispatch) => {
   const token = localStorage.getItem('token');
@@ -45,3 +46,24 @@ export const deleteMessageFailure = createAction('[Message] Delete message faile
 export const addMessageStarted = createAction('[Message] Add message started');
 export const addMessageSuccess = createAction('[Message] Add message success');
 export const addMessageFailed = createAction('[Message] Add message failed');
+
+export const requestMessages = createAction('[Message] Request messages');
+export const getMessagesSuccess = createAction('[Conversation] Get messages success');
+export const getMessagesFailure = createAction('[Message] Get messages failure');
+
+export const getMessages = (id, page) => (dispatch) => {
+    console.log(id, page);
+    // dispatch(requestMessages(id));
+    const token = localStorage.getItem('token');
+
+    return fetch(`http://localhost:5000/messages/all/${id}?offset=${page}`, {
+        method: 'get',
+        headers: {
+            'access-token': token,
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(res => res.json())
+    .then(data => dispatch(getMessagesSuccess({id, data})))
+    .catch(err => console.log(err));
+}

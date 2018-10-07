@@ -1,7 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import { connect } from 'react-redux';
-import { deleteConversation } from 'actions/conversation';
-import { getMessages } from 'actions/message';
 import MessageSendBoxContainer from 'containers/MessageSendBoxContainer';
 import MessagesList from 'components/MessagesList/MessagesList';
 import './Chat.scss';
@@ -131,18 +128,4 @@ class Chat extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    conversation: state.conversations.conversations[ownProps.conversation] || {_id: null, messages: []},
-    userId: state.user.user._id,
-    chosenUser: state.users.chosenUser,
-});
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    deleteConversation: (id) => dispatch(deleteConversation(id)),
-    getMessages: (id, page) => dispatch(getMessages(id, page)),
-});
-
-export default connect(
-    mapStateToProps, 
-    mapDispatchToProps
-)(Chat);
+export default Chat

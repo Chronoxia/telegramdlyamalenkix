@@ -118,7 +118,7 @@ export default handleActions({
                     ...state.conversations[action.payload.id],
                     isFetching: false,
                     page: state.conversations[action.payload.id].page + 1,
-                    messages: state.conversations[action.payload.id].messages.reverse().concat(action.payload.data.reverse()).reverse(),
+                    messages: state.conversations[action.payload.id].messages.reverse().concat(action.payload.data).reverse(),
                 }
             }
         }

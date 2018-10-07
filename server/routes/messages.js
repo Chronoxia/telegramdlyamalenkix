@@ -16,7 +16,6 @@ router.get('/all/:conversationId', checkAuth, (req, res) => {
     const { offset } = req.query;
     const { conversationId } = req.params;
     const limit = 10;
-    console.log(offset);
     Messages
         .find({conversationId, available: req.userId})
         .sort("-createdAt")

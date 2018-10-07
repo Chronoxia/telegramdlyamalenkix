@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import { connect } from 'react-redux';
 import { deleteConversation } from 'actions/conversation';
 import { getMessages } from 'actions/message';
 import MessageSendBoxContainer from 'containers/MessageSendBoxContainer';
 import MessagesList from 'components/MessagesList/MessagesList';
 import './Chat.scss';
+import ProfileModal from "../ProfileModal/ProfileModal";
 
 class Chat extends Component {
     state = {
         selectedMessages: [],
+        profileModalIsOpen: false,
     };
 
     handleToggle = (id) => {
@@ -24,7 +26,7 @@ class Chat extends Component {
 
     };
 
-    getStatusProperty() {   
+    getStatusProperty = () => {
         const { conversation, userId, chosenUser } = this.props;
         if (chosenUser) {
             return chosenUser.online ? 'online' : `last seen at ${new Date(chosenUser.updatedAt).toLocaleString()}`;
@@ -34,7 +36,7 @@ class Chat extends Component {
 
         const companion = conversation.participants.filter(item => item._id !== userId)[0];
         return companion.online ? "online" : `last seen at ${new Date(companion.updatedAt).toLocaleString()}`;
-    }
+    };
 
     handleClick = (e) => {
         e.preventDefault();
@@ -63,34 +65,48 @@ class Chat extends Component {
         return conversation.title
     };
 
+    handleClickModal = () => {
+       this.setState((state)=> ({
+           ...state,
+           profileModalIsOpen: !state.profileModalIsOpen,
+       }))
+    };
+
     render() {
         const { conversation, userId, chosenUser } = this.props;
+        const { profileModalIsOpen } = this.state;
+
         return (
-            <div className="chat">
-                <div className="chat-info">
+            <div className={conversation._id || chosenUser ? "chat" : "chat--not-selected"}>
+                {(conversation._id || chosenUser) &&
+                <Fragment>
+                <div className="chat-info" onClick={this.handleClickModal}>
                     <img className="chat-info__image" src={ this.getImage() }/>
                     <span className="chat-info__title" >{ this.getTitle() }</span>
                     {!conversation.author && <span className="chat-info__status">{this.getStatusProperty()}</span>}
                     <span
                         onClick={ this.handleClick }
-                        style={{ cursor: 'pointer' }}
+                        className="chat__delete"
                     >
                         x
                     </span>
+                    <ProfileModal isOpen={profileModalIsOpen}
+                                  conversation={conversation}/>
                 </div>
-                { conversation.messages && 
-                    <button 
+                { conversation.messages &&
+                    <button
                         onClick={ this.handleLoad }
                     >
                         { conversation.isFetching ? 'loading...' : 'load more' }
                     </button>
                 }
-                <div className={conversation._id || chosenUser ? "messages-list" : "not-selected-conversation"}>
+                <div className="messages-list">
                     <MessagesList conversation={conversation} userId={userId} messages={this.state.selectedMessages} handleToggle={this.handleToggle} />
 
-                    {(conversation._id || chosenUser) && <MessageSendBoxContainer/>}
-                </div>
-
+                            <MessageSendBoxContainer/>
+                        </div>
+                    </Fragment>
+                }
             </div>
         )
     }

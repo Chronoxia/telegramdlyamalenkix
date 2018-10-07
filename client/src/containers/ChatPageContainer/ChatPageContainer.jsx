@@ -10,6 +10,7 @@ import {
 } from 'actions/conversation';
 import { addMessageSuccess, addNewMessageSuccess } from "actions/message";
 import ChatPage from "components/ChatPage";
+import Spinner from "components/Spinner";
 
 class ChatPageContainer extends PureComponent {
     componentDidMount() {
@@ -79,7 +80,7 @@ class ChatPageContainer extends PureComponent {
         const { user, isFetching } = this.props;
         if (isFetching) {
             return (
-                <p>Fetching...</p>
+                <Spinner/>
             )
         }
         return (
